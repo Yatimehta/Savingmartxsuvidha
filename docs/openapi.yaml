@@ -1,0 +1,237 @@
+openapi: 3.0.3
+info:
+  title: VegiMart × Suvidha E-Commerce API
+  description: >
+    Production REST API for VegiMart × Suvidha fresh produce and grocery delivery.
+    Features dual payment gateway routing (Stripe & Razorpay), product catalog CRUD,
+    order processing, webhook handling, and admin control center.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+  - url: https://vegimart-suvidha.vercel.app/api
+    description: Production Vercel deployment
+
+paths:
+  /products:
+    get:
+      summary: List and filter products
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+            enum: [all, fruits, vegetables, suvidha-cafe, dairy-bakery, pantry]
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: featured
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successful response with list of products
+    post:
+      summary: Create new grocery item (Admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, category, price]
+              properties:
+                name:
+                  type: string
+                category:
+                  type: string
+                price:
+                  type: number
+                unit:
+                  type: string
+                stockCount:
+                  type: integer
+                origin:
+                  type: string
+                image:
+                  type: string
+      responses:
+        '200':
+          description: Product created successfully
+
+  /products/{id}:
+    get:
+      summary: Get product details by ID or Slug
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product details
+        '404':
+          description: Product not found
+    put:
+      summary: Update product information or stock (Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Product updated
+    delete:
+      summary: Delete product (Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product removed
+
+  /payment/config:
+    get:
+      summary: Get public gateway configuration
+      description: Returns the currently active gateway ('stripe' or 'razorpay') and public client keys.
+      responses:
+        '200':
+          description: Gateway config response
+
+  /payment/create-order:
+    post:
+      summary: Initialize checkout order with active gateway
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [customer, items]
+              properties:
+                customer:
+                  type: object
+                  required: [fullName, email, phone, addressLine1, suburb, state, postcode]
+                items:
+                  type: array
+                  items:
+                    type: object
+                    required: [productId, quantity]
+                deliverySlot:
+                  type: string
+                promoCode:
+                  type: string
+      responses:
+        '200':
+          description: Order created with payment intent/order tokens
+
+  /payment/verify:
+    post:
+      summary: Verify payment completion and record audit transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [gateway, orderId, orderNumber, amount]
+              properties:
+                gateway:
+                  type: string
+                  enum: [stripe, razorpay]
+                orderId:
+                  type: string
+                orderNumber:
+                  type: string
+                amount:
+                  type: number
+                paymentIntentId:
+                  type: string
+                razorpayPaymentId:
+                  type: string
+                razorpayOrderId:
+                  type: string
+                razorpaySignature:
+                  type: string
+                paymentMethod:
+                  type: string
+      responses:
+        '200':
+          description: Payment verified and transaction recorded
+
+  /webhooks/stripe:
+    post:
+      summary: Stripe webhook listener
+      description: Handles payment_intent.succeeded and asynchronous Stripe events.
+      responses:
+        '200':
+          description: Webhook received
+
+  /webhooks/razorpay:
+    post:
+      summary: Razorpay webhook listener
+      description: Handles payment.captured and asynchronous Razorpay events.
+      responses:
+        '200':
+          description: Webhook received
+
+  /admin/gateway:
+    get:
+      summary: Get full admin gateway settings, audit ledger & webhooks
+      responses:
+        '200':
+          description: Admin gateway status
+    post:
+      summary: Switch active payment gateway or update API keys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                activeGateway:
+                  type: string
+                  enum: [stripe, razorpay]
+                isTestMode:
+                  type: boolean
+                stripePublishableKey:
+                  type: string
+                stripeSecretKey:
+                  type: string
+                razorpayKeyId:
+                  type: string
+                razorpayKeySecret:
+                  type: string
+      responses:
+        '200':
+          description: Gateway settings updated
+
+  /admin/webhooks/simulate:
+    post:
+      summary: Simulate incoming webhook event (Admin test utility)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gateway:
+                  type: string
+                  enum: [stripe, razorpay]
+      responses:
+        '200':
+          description: Simulated webhook recorded

@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vegimart_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-vegimart_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vegimart_secret_password}
+      POSTGRES_DB: ${POSTGRES_DB:-vegimart_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-vegimart_admin} -d ${POSTGRES_DB:-vegimart_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vegimart_web
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-vegimart_admin}:${POSTGRES_PASSWORD:-vegimart_secret_password}@postgres:5432/${POSTGRES_DB:-vegimart_db}?schema=public
+      - NEXT_PUBLIC_APP_URL=http://localhost:3000
+      - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-pk_test_51MockStripeVegiMartKey001}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-sk_test_mock_stripe_key_vegimart_secret}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-whsec_mock_stripe_webhook_secret}
+      - NEXT_PUBLIC_RAZORPAY_KEY_ID=${NEXT_PUBLIC_RAZORPAY_KEY_ID:-rzp_test_mock_VegiMart99}
+      - RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET:-rzp_secret_mock_VegiMartSuvidha}
+      - RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET:-rzp_whsec_mock_secret}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    volumes:
+      - app_data:/app/data
+
+volumes:
+  postgres_data:
+  app_data:

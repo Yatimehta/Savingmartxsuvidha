@@ -1,0 +1,166 @@
+// Prisma Schema for VegiMart x Suvidha PostgreSQL Database
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum ProductCategory {
+  fruits
+  vegetables
+  suvidha_cafe
+  dairy_bakery
+  pantry
+}
+
+enum PaymentGatewayType {
+  stripe
+  razorpay
+}
+
+enum OrderStatus {
+  pending
+  processing
+  packed
+  out_for_delivery
+  delivered
+  cancelled
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+}
+
+model Product {
+  id              String          @id @default(uuid())
+  slug            String          @unique
+  name            String
+  category        ProductCategory
+  categoryName    String
+  price           Float
+  originalPrice   Float?
+  unit            String
+  rating          Float           @default(5.0)
+  reviewsCount    Int             @default(0)
+  inStock         Boolean         @default(true)
+  stockCount      Int             @default(50)
+  origin          String
+  freshnessBadge  String
+  dietary         String[]
+  description     String
+  calories        String?
+  protein         String?
+  carbs           String?
+  fat             String?
+  fiber           String?
+  servingSize     String?
+  image           String
+  isFeatured      Boolean         @default(false)
+  isOrganic       Boolean         @default(false)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  orderItems      OrderItem[]
+
+  @@index([category])
+  @@index([isFeatured])
+}
+
+model Order {
+  id                    String              @id @default(uuid())
+  orderNumber           String              @unique
+  customerName          String
+  customerEmail         String
+  customerPhone         String
+  addressLine1          String
+  addressLine2          String?
+  suburb                String
+  state                 String
+  postcode              String
+  deliveryInstructions  String?
+  deliverySlot          String
+  estimatedDeliveryDate String
+  subtotal              Float
+  deliveryFee           Float               @default(0.0)
+  discount              Float               @default(0.0)
+  tax                   Float
+  total                 Float
+  status                OrderStatus         @default(pending)
+  paymentGateway        PaymentGatewayType
+  paymentStatus         PaymentStatus       @default(pending)
+  transactionId         String?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+
+  items                 OrderItem[]
+  transactions          Transaction[]
+
+  @@index([customerEmail])
+  @@index([status])
+  @@index([paymentGateway])
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+  orderId     String
+  productId   String
+  productName String
+  unit        String
+  price       Float
+  quantity    Int
+  image       String
+
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+}
+
+model Transaction {
+  id                   String             @id @default(uuid())
+  orderId              String
+  orderNumber          String
+  amount               Float
+  currency             String             @default("AUD")
+  gateway              PaymentGatewayType
+  gatewayTransactionId String
+  status               String
+  paymentMethod        String
+  createdAt            DateTime           @default(now())
+
+  order                Order              @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([gateway])
+  @@index([orderId])
+}
+
+model WebhookLog {
+  id         String             @id @default(uuid())
+  gateway    PaymentGatewayType
+  event      String
+  payload    Json
+  receivedAt DateTime           @default(now())
+  status     String
+
+  @@index([gateway])
+}
+
+model SystemSetting {
+  id                    String             @id @default("default")
+  activeGateway         PaymentGatewayType @default(stripe)
+  isTestMode            Boolean            @default(true)
+  stripePublishableKey  String?
+  stripeSecretKey       String?
+  stripeWebhookSecret   String?
+  razorpayKeyId         String?
+  razorpayKeySecret     String?
+  razorpayWebhookSecret String?
+  deliveryFee           Float              @default(4.99)
+  freeDeliveryThreshold Float              @default(50.0)
+  updatedAt             DateTime           @updatedAt
+}

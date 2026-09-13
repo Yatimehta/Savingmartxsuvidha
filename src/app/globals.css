@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+:root {
+  --primary-green: #1b5e20;
+  --primary-green-dark: #144618;
+  --primary-green-light: #2e7d32;
+  --secondary-orange: #ff6f00;
+  --secondary-orange-hover: #e65100;
+  --accent-lime: #7cb342;
+  --accent-lime-hover: #689f38;
+  --background: #f8f9fa;
+  --foreground: #1f2937;
+  --card-bg: #ffffff;
+  --border-color: #e5e7eb;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden;
+}
+
+/* Custom Utilities for VegiMart Brand */
+.bg-vegimart-green {
+  background-color: #1b5e20;
+}
+.bg-vegimart-green-dark {
+  background-color: #144618;
+}
+.bg-vegimart-green-light {
+  background-color: #2e7d32;
+}
+.text-vegimart-green {
+  color: #1b5e20;
+}
+.border-vegimart-green {
+  border-color: #1b5e20;
+}
+
+.bg-vegimart-orange {
+  background-color: #ff6f00;
+}
+.bg-vegimart-orange-hover:hover {
+  background-color: #e65100;
+}
+.text-vegimart-orange {
+  color: #ff6f00;
+}
+.border-vegimart-orange {
+  border-color: #ff6f00;
+}
+
+.bg-vegimart-lime {
+  background-color: #7cb342;
+}
+.text-vegimart-lime {
+  color: #7cb342;
+}
+
+/* Modern smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.92;
+    transform: scale(1.02);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s infinite ease-in-out;
+}

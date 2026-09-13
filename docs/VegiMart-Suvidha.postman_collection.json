@@ -1,0 +1,203 @@
+{
+  "info": {
+    "_postman_id": "vegimart-suvidha-api-v1",
+    "name": "VegiMart × Suvidha E-Commerce API",
+    "description": "Postman API Collection for testing Dual Gateway (Stripe & Razorpay), Products, Orders, and Admin endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Public Storefront",
+      "item": [
+        {
+          "name": "Get Products Catalog",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            }
+          }
+        },
+        {
+          "name": "Filter by Category (Fruits)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?category=fruits",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                { "key": "category", "value": "fruits" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/prod-fruit-1",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "prod-fruit-1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Payment Gateway & Checkout",
+      "item": [
+        {
+          "name": "Get Active Gateway Config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/payment/config",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment", "config"]
+            }
+          }
+        },
+        {
+          "name": "Create Order & Initialize Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer\": {\n    \"fullName\": \"Sarah Jenkins\",\n    \"email\": \"sarah.j@example.com\",\n    \"phone\": \"0412 345 678\",\n    \"addressLine1\": \"48 Collins Street\",\n    \"suburb\": \"Melbourne\",\n    \"state\": \"VIC\",\n    \"postcode\": \"3000\"\n  },\n  \"items\": [\n    {\n      \"productId\": \"prod-fruit-1\",\n      \"productName\": \"Australian Pink Lady Apples\",\n      \"unit\": \"per kg\",\n      \"price\": 4.80,\n      \"quantity\": 2,\n      \"image\": \"https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=800&q=80\"\n    }\n  ],\n  \"deliverySlot\": \"Morning (8:00 AM - 11:00 AM)\",\n  \"promoCode\": \"FRESH10\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payment/create-order",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment", "create-order"]
+            }
+          }
+        },
+        {
+          "name": "Verify Payment (Stripe)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gateway\": \"stripe\",\n  \"orderId\": \"ord-sample-1\",\n  \"orderNumber\": \"VM-98214\",\n  \"amount\": 24.90,\n  \"paymentIntentId\": \"pi_test_mock_123\",\n  \"paymentMethod\": \"Stripe Card (Visa ****4242)\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payment/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment", "verify"]
+            }
+          }
+        },
+        {
+          "name": "Verify Payment (Razorpay)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gateway\": \"razorpay\",\n  \"orderId\": \"ord-sample-1\",\n  \"orderNumber\": \"VM-98214\",\n  \"amount\": 24.90,\n  \"razorpayPaymentId\": \"pay_rzp_mock_123\",\n  \"razorpayOrderId\": \"order_mock_123\",\n  \"razorpaySignature\": \"mock_valid_signature\",\n  \"paymentMethod\": \"Razorpay UPI (GPay)\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payment/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment", "verify"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Admin Gateway Manager",
+      "item": [
+        {
+          "name": "Get Admin Settings & Audit Ledger",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/gateway",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "gateway"]
+            }
+          }
+        },
+        {
+          "name": "Switch Gateway to Razorpay",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activeGateway\": \"razorpay\",\n  \"isTestMode\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/gateway",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "gateway"]
+            }
+          }
+        },
+        {
+          "name": "Switch Gateway to Stripe",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activeGateway\": \"stripe\",\n  \"isTestMode\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/gateway",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "gateway"]
+            }
+          }
+        },
+        {
+          "name": "Simulate Webhook Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gateway\": \"stripe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/webhooks/simulate",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "webhooks", "simulate"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
