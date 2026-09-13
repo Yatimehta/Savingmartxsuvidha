@@ -20,10 +20,13 @@ import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export default function HomePage() {
   const allProducts = db.getProducts();
-  const freshProduce = allProducts.filter((p) => p.category === 'Fresh Fruits & Vegetables').slice(0, 4);
-  const indianPantry = allProducts.filter((p) => p.category === 'Indian Pantry').slice(0, 4);
-  const weeklyDeals = allProducts.filter((p) => p.originalPrice && p.originalPrice > p.price).slice(0, 4);
+  const freshProduce = allProducts.filter((p) => p.category === 'Fresh Fruits & Vegetables').slice(0, 8);
+  const indianPantry = allProducts.filter((p) => p.category === 'Indian Pantry').slice(0, 8);
+  const weeklyDeals = allProducts.filter((p) => p.originalPrice && p.originalPrice > p.price).slice(0, 8);
   const settings = db.getSettings();
+
+  const heroAtta = allProducts.find((p) => p.name.toLowerCase().includes('aashirvaad') && p.name.toLowerCase().includes('atta')) || allProducts[0];
+  const heroBanana = allProducts.find((p) => p.name.toLowerCase().includes('banana')) || allProducts[1];
 
   const categories = [
     {
@@ -32,7 +35,8 @@ export default function HomePage() {
       tagline: 'Farm bananas, apples & spinach',
       badge: 'Daily Harvest',
       icon: '🍌',
-      count: allProducts.filter((p) => p.category === 'Fresh Fruits & Vegetables').length
+      count: allProducts.filter((p) => p.category === 'Fresh Fruits & Vegetables').length,
+      image: allProducts.find((p) => p.category === 'Fresh Fruits & Vegetables' && p.image)?.image || 'https://www.grocerz.com.au/storage/278/Grocerz---Bananas-_-1kg.webp'
     },
     {
       name: 'Indian Pantry',
@@ -40,7 +44,8 @@ export default function HomePage() {
       tagline: 'Aashirvaad atta, basmati & spices',
       badge: '100% Authentic',
       icon: '🌾',
-      count: allProducts.filter((p) => p.category === 'Indian Pantry').length
+      count: allProducts.filter((p) => p.category === 'Indian Pantry').length,
+      image: allProducts.find((p) => p.category === 'Indian Pantry' && p.image)?.image || 'https://www.grocerz.com.au/storage/6518/Aashirvaad---Sudh-Chakki-Atta-Flour-10kg.webp'
     },
     {
       name: 'Daily Essentials',
@@ -48,7 +53,8 @@ export default function HomePage() {
       tagline: 'Sugar, Taj tea & breakfast',
       badge: 'Pantry Staples',
       icon: '☕',
-      count: allProducts.filter((p) => p.category === 'Daily Essentials').length
+      count: allProducts.filter((p) => p.category === 'Daily Essentials').length,
+      image: allProducts.find((p) => p.category === 'Daily Essentials' && p.image)?.image || 'https://www.grocerz.com.au/storage/6518/Aashirvaad---Sudh-Chakki-Atta-Flour-10kg.webp'
     },
     {
       name: 'Frozen',
@@ -56,7 +62,8 @@ export default function HomePage() {
       tagline: 'Samosas, green peas & rotis',
       badge: 'Ready to Cook',
       icon: '🥟',
-      count: allProducts.filter((p) => p.category === 'Frozen').length
+      count: allProducts.filter((p) => p.category === 'Frozen').length,
+      image: allProducts.find((p) => p.category === 'Frozen' && p.image)?.image || 'https://www.grocerz.com.au/storage/8630/Deep---Kawan-Paratha-Flaky-Roti-Family-Pack-_-1.35kg.webp'
     },
     {
       name: 'Snacks & Munchies',
@@ -64,7 +71,8 @@ export default function HomePage() {
       tagline: 'Haldiram bhujia & Parle-G',
       badge: 'Tea-time Treats',
       icon: '🍪',
-      count: allProducts.filter((p) => p.category === 'Snacks & Munchies').length
+      count: allProducts.filter((p) => p.category === 'Snacks & Munchies').length,
+      image: allProducts.find((p) => p.category === 'Snacks & Munchies' && p.image)?.image || 'https://www.grocerz.com.au/storage/3200/Haldiram_s---Patisa-_-500g.webp'
     },
     {
       name: 'Dairy Eggs & Fridge',
@@ -72,7 +80,8 @@ export default function HomePage() {
       tagline: 'Paneer, yogurt, milk & butter',
       badge: 'Chilled Daily',
       icon: '🥛',
-      count: allProducts.filter((p) => p.category === 'Dairy Eggs & Fridge').length
+      count: allProducts.filter((p) => p.category === 'Dairy Eggs & Fridge').length,
+      image: allProducts.find((p) => p.category === 'Dairy Eggs & Fridge' && p.image)?.image || 'https://www.grocerz.com.au/storage/3318/Ghee.png'
     },
     {
       name: 'Dry Fruits & Seeds',
@@ -80,7 +89,8 @@ export default function HomePage() {
       tagline: 'Almonds, cashews & raisins',
       badge: 'Premium Dry Fruits',
       icon: '🥜',
-      count: allProducts.filter((p) => p.category === 'Dry Fruits & Seeds').length
+      count: allProducts.filter((p) => p.category === 'Dry Fruits & Seeds').length,
+      image: allProducts.find((p) => p.category === 'Dry Fruits & Seeds' && p.image)?.image || 'https://www.grocerz.com.au/storage/1384/Royal---Cashew-Nuts-Whole-_-500g.webp'
     },
     {
       name: 'Drinks',
@@ -88,7 +98,8 @@ export default function HomePage() {
       tagline: 'Mango juices & sodas',
       badge: 'Cold Drinks',
       icon: '🧃',
-      count: allProducts.filter((p) => p.category === 'Drinks').length
+      count: allProducts.filter((p) => p.category === 'Drinks').length,
+      image: allProducts.find((p) => p.category === 'Drinks' && p.image)?.image || 'https://www.grocerz.com.au/storage/1359/Frooti---Mango-Drink-_-1.2L.webp'
     }
   ];
 
@@ -165,7 +176,7 @@ export default function HomePage() {
                   href="/catalog"
                   className="bg-[#FF6F00] hover:bg-[#E65100] text-white font-bold px-7 py-3 rounded-[8px] flex items-center justify-center gap-2 shadow-sm transition-all hover:-translate-y-0.5 text-sm sm:text-base border-2 border-transparent hover:border-[#FFC107]"
                 >
-                  Shop All 51 Products <ArrowRight className="w-4 h-4 text-[#FFC107]" />
+                  Shop All {allProducts.length} Products <ArrowRight className="w-4 h-4 text-[#FFC107]" />
                 </Link>
 
                 <Link
@@ -191,31 +202,51 @@ export default function HomePage() {
                   </span>
                 </div>
 
-                <div className="p-2.5 bg-[#FFF9C4]/50 rounded-[6px] border border-[#FFC107]/40 flex items-center gap-3">
-                  <OptimizedImage
-                    src="https://www.grocerz.com.au/storage/uploads/products/medium/904_1701386762_2615.jpg"
-                    alt="Aashirvaad Atta"
-                    className="w-14 h-14 rounded-[4px] bg-white p-1 border border-gray-200 shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-black text-[#1B5E20]">Aashirvaad Atta</p>
-                    <p className="text-[#1A1A1A] font-bold text-xs truncate">Sudh Chakki Atta Export 10kg</p>
-                    <p className="text-xs text-[#FF6F00] font-black mt-0.5">$17.99 AUD</p>
-                  </div>
-                </div>
+                {/* Hero Item 1: Aashirvaad Atta */}
+                {heroAtta && (
+                  <Link
+                    href={`/product/${heroAtta.id}`}
+                    className="p-2.5 bg-[#FFF9C4]/50 rounded-[6px] border border-[#FFC107]/40 flex items-center gap-3 hover:bg-[#FFF9C4] transition-colors group block"
+                  >
+                    <div className="w-14 h-14 rounded-[4px] bg-white p-1 border border-gray-200 shrink-0 relative overflow-hidden">
+                      <OptimizedImage
+                        src={heroAtta.image}
+                        alt={heroAtta.name}
+                        width={56}
+                        height={56}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] font-black text-[#1B5E20] truncate">{heroAtta.brand}</p>
+                      <p className="text-[#1A1A1A] font-bold text-xs truncate group-hover:text-[#1B5E20] transition-colors">{heroAtta.name}</p>
+                      <p className="text-xs text-[#FF6F00] font-black mt-0.5">${heroAtta.price.toFixed(2)} AUD</p>
+                    </div>
+                  </Link>
+                )}
 
-                <div className="p-2.5 bg-[#FFF9C4]/50 rounded-[6px] border border-[#FFC107]/40 flex items-center gap-3">
-                  <OptimizedImage
-                    src="https://www.grocerz.com.au/storage/uploads/products/medium/1665_1731633519_2302.jpg"
-                    alt="Fresh Bananas"
-                    className="w-14 h-14 rounded-[4px] bg-white p-1 border border-gray-200 shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-black text-[#1B5E20]">Fresh Produce</p>
-                    <p className="text-[#1A1A1A] font-bold text-xs truncate">Grocerz Bananas (450g-550g)</p>
-                    <p className="text-xs text-[#FF6F00] font-black mt-0.5">$1.89 AUD</p>
-                  </div>
-                </div>
+                {/* Hero Item 2: Fresh Bananas */}
+                {heroBanana && (
+                  <Link
+                    href={`/product/${heroBanana.id}`}
+                    className="p-2.5 bg-[#FFF9C4]/50 rounded-[6px] border border-[#FFC107]/40 flex items-center gap-3 hover:bg-[#FFF9C4] transition-colors group block"
+                  >
+                    <div className="w-14 h-14 rounded-[4px] bg-white p-1 border border-gray-200 shrink-0 relative overflow-hidden">
+                      <OptimizedImage
+                        src={heroBanana.image}
+                        alt={heroBanana.name}
+                        width={56}
+                        height={56}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] font-black text-[#1B5E20] truncate">{heroBanana.brand}</p>
+                      <p className="text-[#1A1A1A] font-bold text-xs truncate group-hover:text-[#1B5E20] transition-colors">{heroBanana.name}</p>
+                      <p className="text-xs text-[#FF6F00] font-black mt-0.5">${heroBanana.price.toFixed(2)} AUD</p>
+                    </div>
+                  </Link>
+                )}
 
                 <div className="p-3 bg-[#FFC107] rounded-[6px] border border-amber-400 flex items-center justify-between text-xs shadow-2xs">
                   <div>
@@ -235,7 +266,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CATEGORY EXPLORER - ALL 8 GROCERZ CATEGORIES */}
+      {/* CATEGORY EXPLORER - ALL 8 GROCERZ CATEGORIES WITH REAL PRODUCT IMAGES */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-5">
           <div className="text-left">
@@ -254,22 +285,30 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3.5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4">
           {categories.map((cat) => (
             <Link
               key={cat.slug}
               href={`/catalog?category=${cat.slug}`}
-              className="p-3.5 bg-white rounded-[8px] border border-[#E0E0E0] hover:bg-[#C8E6C9]/40 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between text-left group shadow-2xs"
+              className="p-3.5 bg-white rounded-[8px] border border-[#E0E0E0] hover:border-[#FFC107] hover:bg-[#FFF9C4]/20 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between text-left group shadow-2xs relative overflow-hidden"
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl">{cat.icon}</span>
-                <span className="text-[10px] font-bold bg-[#FFF9C4] text-[#1A1A1A] px-1.5 py-0.5 rounded-[4px] border border-[#FFC107]/40">
+                <div className="w-12 h-12 rounded-[6px] overflow-hidden bg-[#FFFBF0] p-1 border border-gray-200 shrink-0 relative">
+                  <OptimizedImage
+                    src={cat.image}
+                    alt={cat.name}
+                    width={48}
+                    height={48}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <span className="text-[10px] font-extrabold bg-[#FFF9C4] text-[#1A1A1A] px-2 py-0.5 rounded-[4px] border border-[#FFC107]/50 shadow-2xs">
                   {cat.count} items
                 </span>
               </div>
-              <div>
-                <h3 className="font-bold text-sm text-[#1A1A1A] group-hover:text-[#1B5E20] transition-colors leading-tight">
-                  {cat.name}
+              <div className="pt-1">
+                <h3 className="font-bold text-sm text-[#1A1A1A] group-hover:text-[#1B5E20] transition-colors leading-tight flex items-center gap-1">
+                  <span>{cat.icon}</span> {cat.name}
                 </h3>
                 <p className="text-[11px] text-gray-500 mt-1 line-clamp-1">{cat.tagline}</p>
               </div>

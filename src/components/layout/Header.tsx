@@ -262,7 +262,7 @@ export function Header() {
               href="/catalog"
               className="bg-[#FFC107] text-[#1A1A1A] font-extrabold px-2.5 py-0.5 rounded-[4px] flex items-center gap-1 shadow-2xs hover:bg-yellow-300 transition-colors"
             >
-              All 51 Grocerz Items
+              All Grocerz Products (441)
             </Link>
             <Link
               href="/catalog?category=fresh-fruits-and-vegetables"
