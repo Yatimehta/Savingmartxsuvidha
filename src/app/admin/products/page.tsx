@@ -179,7 +179,7 @@ export default function AdminProductsPage() {
     if (categoryFilter !== 'all' && p.category !== categoryFilter) return false;
     if (searchTerm) {
       const q = searchTerm.toLowerCase();
-      return p.name.toLowerCase().includes(q) || p.origin.toLowerCase().includes(q);
+      return p.name.toLowerCase().includes(q) || (p.origin ? p.origin.toLowerCase().includes(q) : false);
     }
     return true;
   });

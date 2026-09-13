@@ -1,17 +1,31 @@
 export type ProductCategory =
   | 'all'
-  | 'fruits'
-  | 'vegetables'
-  | 'suvidha-cafe'
-  | 'dairy-bakery'
-  | 'pantry';
+  | 'Fresh Fruits & Vegetables'
+  | 'fresh-fruits-and-vegetables'
+  | 'Indian Pantry'
+  | 'indian-pantry'
+  | 'Daily Essentials'
+  | 'daily-essentials'
+  | 'Frozen'
+  | 'frozen'
+  | 'Snacks & Munchies'
+  | 'snacks-munchies'
+  | 'Dairy Eggs & Fridge'
+  | 'dairy-eggs-fridge'
+  | 'Dry Fruits & Seeds'
+  | 'dry-fruits-nuts-and-seeds'
+  | 'Drinks'
+  | 'drinks'
+  | string;
 
 export interface Product {
   id: string;
   name: string;
-  slug: string;
-  category: ProductCategory;
-  categoryName: string;
+  slug?: string;
+  category: string;
+  categorySlug?: string;
+  categoryName?: string;
+  brand?: string;
   price: number;
   originalPrice?: number;
   unit: string;
@@ -19,11 +33,11 @@ export interface Product {
   reviewsCount: number;
   inStock: boolean;
   stockCount: number;
-  origin: string;
-  freshnessBadge: string;
-  dietary: string[];
+  origin?: string;
+  freshnessBadge?: string;
+  dietary?: string[];
   description: string;
-  nutrition: {
+  nutrition?: {
     servingSize: string;
     calories: string;
     protein: string;
@@ -32,6 +46,7 @@ export interface Product {
     fiber?: string;
   };
   image: string;
+  tags?: string[];
   isFeatured?: boolean;
   isOrganic?: boolean;
 }

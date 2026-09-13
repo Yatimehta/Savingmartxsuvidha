@@ -32,13 +32,14 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     toggleWishlist(product.id);
   };
 
+  // List view
   if (viewMode === 'list') {
     return (
-      <div className="bg-white rounded-2xl border border-gray-200/80 p-4 hover:shadow-lg transition-all duration-200 flex flex-col sm:flex-row gap-4 items-center group">
+      <div className="bg-white rounded-[8px] border border-[#E0E0E0] p-4 hover:bg-[#C8E6C9]/40 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-200 flex flex-col sm:flex-row gap-4 items-center group">
         {/* Image Container */}
         <Link
           href={`/product/${product.id}`}
-          className="relative w-full sm:w-44 h-40 rounded-xl overflow-hidden bg-gray-50 shrink-0 block"
+          className="relative w-full sm:w-44 h-36 rounded-[6px] overflow-hidden bg-[#FFFBF0] shrink-0 block border border-gray-100"
         >
           <img
             src={product.image}
@@ -46,70 +47,68 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80';
             }}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-200"
           />
-          {product.originalPrice && (
-            <span className="absolute top-2 left-2 bg-vegimart-orange text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
+          {product.originalPrice && product.originalPrice > product.price && (
+            <span className="absolute top-2 left-2 bg-[#FF6F00] text-white text-[10px] font-bold px-2 py-0.5 rounded-[4px]">
               Save ${(product.originalPrice - product.price).toFixed(2)}
             </span>
           )}
         </Link>
 
         {/* Info */}
-        <div className="flex-1 w-full space-y-1.5">
+        <div className="flex-1 w-full space-y-1.5 text-left">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold text-vegimart-green bg-green-50 px-2 py-0.5 rounded-md">
-              {product.categoryName}
+            <span className="text-[11px] font-bold text-[#1B5E20] bg-emerald-50 px-2 py-0.5 rounded-[4px]">
+              {product.category || 'Grocerz'}
             </span>
-            <span className="text-xs text-gray-400 flex items-center gap-1">
-              <MapPin className="w-3 h-3 text-gray-400" />
-              {product.origin}
+            <span className="text-xs text-gray-500 flex items-center gap-1">
+              <MapPin className="w-3 h-3 text-[#FF6F00]" />
+              Grocerz Australia
             </span>
           </div>
 
           <Link href={`/product/${product.id}`} className="block">
-            <h3 className="font-bold text-gray-900 text-base group-hover:text-vegimart-green transition-colors">
+            <h3 className="font-bold text-[#1A1A1A] text-base group-hover:text-[#1B5E20] transition-colors line-clamp-1">
               {product.name}
             </h3>
           </Link>
 
-          <p className="text-xs text-gray-500 line-clamp-2">{product.description}</p>
+          <p className="text-xs text-gray-600 line-clamp-2">{product.description}</p>
 
           <div className="flex items-center gap-2 text-xs pt-1">
-            <div className="flex items-center gap-1 text-amber-500 font-semibold">
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              <span>{product.rating}</span>
+            <div className="flex items-center gap-1 text-[#FF6F00] font-semibold">
+              <Star className="w-3.5 h-3.5 fill-[#FFC107] text-[#FFC107]" />
+              <span className="text-gray-800">{product.rating}</span>
             </div>
             <span className="text-gray-300">•</span>
-            <span className="text-gray-500">({product.reviewsCount} reviews)</span>
-            <span className="text-gray-300">•</span>
-            <span className="text-emerald-700 font-medium">{product.freshnessBadge}</span>
+            <span className="text-gray-500">({product.reviewsCount} verified reviews)</span>
           </div>
         </div>
 
         {/* Pricing and Action */}
-        <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100">
+        <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-200">
           <div className="text-left sm:text-right">
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-xl font-black text-gray-900">
+            <div className="flex items-baseline gap-1.5 justify-end">
+              <span className="text-2xl font-black text-[#FF6F00]">
                 ${product.price.toFixed(2)}
               </span>
-              {product.originalPrice && (
+              {product.originalPrice && product.originalPrice > product.price && (
                 <span className="text-xs text-gray-400 line-through">
                   ${product.originalPrice.toFixed(2)}
                 </span>
               )}
             </div>
-            <p className="text-[11px] text-gray-500">{product.unit}</p>
+            <p className="text-xs text-gray-500 font-medium">{product.unit}</p>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={handleWishlist}
-              className={`p-2 rounded-xl border transition-colors ${
+              className={`p-2 rounded-[6px] border transition-colors ${
                 isInWishlist
                   ? 'bg-rose-50 border-rose-200 text-rose-500'
-                  : 'bg-white border-gray-200 text-gray-400 hover:text-rose-500'
+                  : 'bg-white border-gray-300 text-gray-400 hover:text-rose-500'
               }`}
               title="Wishlist"
             >
@@ -118,10 +117,10 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
             <button
               onClick={handleAddToCart}
-              className={`px-4 py-2 rounded-xl font-semibold text-xs flex items-center gap-1.5 transition-all ${
+              className={`px-4 py-2 rounded-[6px] font-bold text-xs flex items-center gap-1.5 transition-all text-white ${
                 added
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-vegimart-green hover:bg-green-800 text-white shadow-xs hover:shadow-md'
+                  ? 'bg-[#1B5E20]'
+                  : 'bg-[#FF6F00] hover:bg-[#E65100] hover:-translate-y-0.5 shadow-xs'
               }`}
             >
               {added ? (
@@ -142,42 +141,40 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
   // Grid view (default)
   return (
-    <div className="bg-white rounded-2xl border border-gray-200/80 p-3.5 hover:shadow-xl hover:border-green-200 transition-all duration-300 flex flex-col justify-between group relative">
-      {/* Top Badges */}
-      <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-gray-50 mb-3">
-        <Link href={`/product/${product.id}`} className="block w-full h-full">
+    <div className="bg-white rounded-[8px] border border-[#E0E0E0] px-5 py-4 hover:bg-[#C8E6C9]/35 hover:-translate-y-0.5 hover:shadow-xs transition-all duration-200 flex flex-col justify-between group relative text-left">
+      {/* Top Badges & Image */}
+      <div className="relative w-full aspect-4/3 rounded-[6px] overflow-hidden bg-[#FFFBF0] mb-3 border border-gray-100/80">
+        <Link href={`/product/${product.id}`} className="block w-full h-full p-2">
           <img
             src={product.image}
             alt={product.name}
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80';
             }}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
             loading="lazy"
           />
         </Link>
 
-        {/* Discount tag */}
-        {product.originalPrice && (
-          <span className="absolute top-2 left-2 bg-vegimart-orange text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
-            Save ${(product.originalPrice - product.price).toFixed(2)}
-          </span>
-        )}
+        {/* Stock indicator badge top-right */}
+        <span className="absolute top-2 right-2 bg-emerald-100 text-[#1B5E20] border border-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded-[4px]">
+          In Stock
+        </span>
 
-        {/* Category / Suvidha tag */}
-        {product.category === 'suvidha-cafe' && (
-          <span className="absolute bottom-2 left-2 bg-orange-600/90 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-xs">
-            <Sparkles className="w-2.5 h-2.5" /> Suvidha Cafe
+        {/* Discount tag top-left */}
+        {product.originalPrice && product.originalPrice > product.price && (
+          <span className="absolute top-2 left-2 bg-[#FF6F00] text-white text-[10px] font-bold px-2 py-0.5 rounded-[4px] shadow-2xs">
+            Save ${(product.originalPrice - product.price).toFixed(2)}
           </span>
         )}
 
         {/* Wishlist Button */}
         <button
           onClick={handleWishlist}
-          className={`absolute top-2 right-2 p-2 rounded-full backdrop-blur-md shadow-xs transition-transform active:scale-90 ${
+          className={`absolute bottom-2 right-2 p-1.5 rounded-[6px] bg-white/90 border border-gray-200 shadow-2xs transition-transform active:scale-95 ${
             isInWishlist
-              ? 'bg-white text-rose-500'
-              : 'bg-white/85 text-gray-400 hover:text-rose-500'
+              ? 'text-rose-500'
+              : 'text-gray-400 hover:text-rose-500'
           }`}
           title="Save to Wishlist"
         >
@@ -185,32 +182,28 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
         </button>
       </div>
 
-      {/* Content */}
-      <div className="space-y-1.5 flex-1 flex flex-col justify-between">
+      {/* Content - Left Aligned */}
+      <div className="space-y-1.5 flex-1 flex flex-col justify-between text-left">
         <div>
           <div className="flex items-center justify-between text-[11px] text-gray-500 mb-1">
-            <span className="font-semibold text-vegimart-green uppercase tracking-wide text-[10px]">
-              {product.categoryName}
+            <span className="font-bold text-[#1B5E20] text-[11px] tracking-tight">
+              {product.brand || 'Grocerz'}
             </span>
-            <span className="truncate max-w-[120px] text-gray-400">{product.origin}</span>
+            <span className="text-[10px] text-gray-400 font-medium">{product.category}</span>
           </div>
 
-          <Link href={`/product/${product.id}`} className="block">
-            <h3 className="font-bold text-gray-900 text-sm line-clamp-1 group-hover:text-vegimart-green transition-colors">
+          <Link href={`/product/${product.id}`} className="block text-left">
+            <h3 className="font-bold text-[#1A1A1A] text-sm line-clamp-2 group-hover:text-[#1B5E20] transition-colors leading-snug">
               {product.name}
             </h3>
           </Link>
-
-          <p className="text-[11px] text-emerald-700 font-medium mt-0.5">
-            {product.freshnessBadge}
-          </p>
         </div>
 
-        {/* Rating & Dietary tags */}
+        {/* Rating */}
         <div className="flex items-center gap-1.5 text-xs pt-1">
-          <div className="flex items-center gap-1 text-amber-500 font-bold text-[11px]">
-            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-            <span>{product.rating}</span>
+          <div className="flex items-center gap-0.5 text-amber-500 font-bold text-[11px]">
+            <Star className="w-3 h-3 fill-[#FFC107] text-[#FFC107]" />
+            <span className="text-gray-700">{product.rating}</span>
           </div>
           <span className="text-gray-300">•</span>
           <span className="text-gray-400 text-[11px]">({product.reviewsCount})</span>
@@ -218,26 +211,26 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
         {/* Price & Add to Cart button */}
         <div className="pt-2 mt-2 border-t border-gray-100 flex items-center justify-between gap-2">
-          <div>
+          <div className="text-left">
             <div className="flex items-baseline gap-1">
-              <span className="text-lg font-black text-gray-900">
+              <span className="text-xl font-black text-[#FF6F00]">
                 ${product.price.toFixed(2)}
               </span>
-              {product.originalPrice && (
+              {product.originalPrice && product.originalPrice > product.price && (
                 <span className="text-xs text-gray-400 line-through">
                   ${product.originalPrice.toFixed(2)}
                 </span>
               )}
             </div>
-            <span className="text-[10px] text-gray-500 block leading-tight">{product.unit}</span>
+            <span className="text-[11px] text-gray-500 block leading-tight font-medium">{product.unit}</span>
           </div>
 
           <button
             onClick={handleAddToCart}
-            className={`px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1 transition-all ${
+            className={`px-3.5 py-1.5 rounded-[6px] text-xs font-bold flex items-center gap-1 transition-all text-white ${
               added
-                ? 'bg-emerald-600 text-white scale-95'
-                : 'bg-vegimart-green hover:bg-green-800 text-white shadow-xs hover:shadow-md'
+                ? 'bg-[#1B5E20] scale-95'
+                : 'bg-[#FF6F00] hover:bg-[#E65100] hover:-translate-y-0.5 shadow-2xs'
             }`}
           >
             {added ? (

@@ -20,10 +20,11 @@ export async function GET(req: NextRequest) {
       products = products.filter(
         (p) =>
           p.name.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          p.categoryName.toLowerCase().includes(q) ||
-          p.origin.toLowerCase().includes(q) ||
-          p.dietary.some((d) => d.toLowerCase().includes(q))
+          p.description?.toLowerCase().includes(q) ||
+          p.category?.toLowerCase().includes(q) ||
+          p.brand?.toLowerCase().includes(q) ||
+          (p.origin && p.origin.toLowerCase().includes(q)) ||
+          (p.tags && p.tags.some((d) => d.toLowerCase().includes(q)))
       );
     }
 

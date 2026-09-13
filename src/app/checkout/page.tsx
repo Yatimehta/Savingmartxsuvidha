@@ -185,26 +185,26 @@ export default function CheckoutPage() {
   const activeGateway = gatewayConfig?.activeGateway || 'stripe';
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <div className="flex items-center justify-between border-b border-gray-200 pb-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-[#FFFBF0] text-left">
+      <div className="flex items-center justify-between border-b border-[#E0E0E0] pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <Link href="/cart" className="text-xs text-gray-500 hover:text-vegimart-green flex items-center gap-1">
-              <ArrowLeft className="w-3.5 h-3.5" /> Back to Basket
+            <Link href="/cart" className="text-xs text-gray-500 hover:text-[#1B5E20] flex items-center gap-1 font-medium">
+              <ArrowLeft className="w-3.5 h-3.5" /> Back to Cart
             </Link>
           </div>
-          <h1 className="text-3xl font-black text-gray-900 tracking-tight mt-1">
+          <h1 className="text-2xl sm:text-3xl font-black text-[#1B5E20] tracking-tight mt-1">
             Express Checkout
           </h1>
         </div>
 
         {/* Active Gateway Badge */}
-        <div className="flex items-center gap-2.5 bg-white px-3.5 py-2 rounded-2xl border border-gray-200 shadow-xs">
-          <div className={`w-2.5 h-2.5 rounded-full ${activeGateway === 'stripe' ? 'bg-indigo-500' : 'bg-blue-600'} animate-pulse`} />
+        <div className="flex items-center gap-2.5 bg-white px-3.5 py-2 rounded-[6px] border border-[#E0E0E0] shadow-2xs">
+          <div className={`w-2.5 h-2.5 rounded-full ${activeGateway === 'stripe' ? 'bg-[#FF6F00]' : 'bg-emerald-600'} animate-pulse`} />
           <div className="text-right">
-            <p className="text-[10px] text-gray-400 font-bold uppercase leading-none">Routed Via</p>
-            <p className="text-xs font-black uppercase text-gray-900 leading-tight">
-              {activeGateway === 'stripe' ? 'Stripe Gateway' : 'Razorpay Gateway'}
+            <p className="text-[10px] text-gray-400 font-bold uppercase leading-none">Active Gateway</p>
+            <p className="text-xs font-black uppercase text-[#1B5E20] leading-tight">
+              {activeGateway === 'stripe' ? 'Stripe (Cards)' : 'Razorpay (India/UPI)'}
             </p>
           </div>
         </div>

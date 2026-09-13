@@ -56,30 +56,35 @@ function CatalogContent() {
     if (q) setSearchTerm(q);
   }, [searchParams]);
 
-  const categories: { id: ProductCategory; label: string }[] = [
-    { id: 'all', label: 'All Products' },
-    { id: 'fruits', label: 'Fresh Fruits' },
-    { id: 'vegetables', label: 'Vegetables' },
-    { id: 'suvidha-cafe', label: 'Suvidha Cafe & Grocery' },
-    { id: 'dairy-bakery', label: 'Dairy & Bakery' },
-    { id: 'pantry', label: 'Pantry Essentials' }
+  const categories: { id: string; label: string; slug: string }[] = [
+    { id: 'all', label: 'All 51 Grocerz Items', slug: 'all' },
+    { id: 'fresh-fruits-and-vegetables', label: 'Fresh Fruits & Vegetables', slug: 'fresh-fruits-and-vegetables' },
+    { id: 'indian-pantry', label: 'Indian Pantry', slug: 'indian-pantry' },
+    { id: 'daily-essentials', label: 'Daily Essentials', slug: 'daily-essentials' },
+    { id: 'frozen', label: 'Frozen', slug: 'frozen' },
+    { id: 'snacks-munchies', label: 'Snacks & Munchies', slug: 'snacks-munchies' },
+    { id: 'dairy-eggs-fridge', label: 'Dairy Eggs & Fridge', slug: 'dairy-eggs-fridge' },
+    { id: 'dry-fruits-nuts-and-seeds', label: 'Dry Fruits & Seeds', slug: 'dry-fruits-nuts-and-seeds' },
+    { id: 'drinks', label: 'Drinks', slug: 'drinks' }
   ];
 
   const filteredProducts = useMemo(() => {
     return products
       .filter((p) => {
         if (showOnlyWishlist && !wishlist.includes(p.id)) return false;
-        if (selectedCategory !== 'all' && p.category !== selectedCategory) return false;
+        if (selectedCategory !== 'all') {
+          const matchSlug = p.categorySlug === selectedCategory;
+          const matchCat = p.category?.toLowerCase().replace(/\s+/g, '-').includes(selectedCategory.replace(/-/g, ' '));
+          if (!matchSlug && !matchCat && p.category !== selectedCategory) return false;
+        }
         if (p.price > priceRange) return false;
-        if (organicOnly && !p.isOrganic && !p.dietary.some((d) => d.toLowerCase().includes('organic')))
-          return false;
         if (searchTerm) {
           const q = searchTerm.toLowerCase();
           const matchName = p.name.toLowerCase().includes(q);
-          const matchDesc = p.description.toLowerCase().includes(q);
-          const matchCat = p.categoryName.toLowerCase().includes(q);
-          const matchOrigin = p.origin.toLowerCase().includes(q);
-          if (!matchName && !matchDesc && !matchCat && !matchOrigin) return false;
+          const matchDesc = p.description?.toLowerCase().includes(q);
+          const matchCat = p.category?.toLowerCase().includes(q);
+          const matchBrand = p.brand?.toLowerCase().includes(q);
+          if (!matchName && !matchDesc && !matchCat && !matchBrand) return false;
         }
         return true;
       })
@@ -87,9 +92,9 @@ function CatalogContent() {
         if (sortBy === 'price-asc') return a.price - b.price;
         if (sortBy === 'price-desc') return b.price - a.price;
         if (sortBy === 'rating') return b.rating - a.rating;
-        return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
+        return a.name.localeCompare(b.name);
       });
-  }, [products, selectedCategory, searchTerm, sortBy, priceRange, organicOnly, showOnlyWishlist, wishlist]);
+  }, [products, selectedCategory, searchTerm, sortBy, priceRange, showOnlyWishlist, wishlist]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">

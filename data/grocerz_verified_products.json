@@ -1,6 +1,4 @@
-import { Product } from '@/types';
-
-export const INITIAL_PRODUCTS: Product[] = [
+[
   {
     "id": "grocerz-1665",
     "name": "Grocerz - Banana (450g-550g) | 1 Pack",
@@ -1174,4 +1172,4 @@ export const INITIAL_PRODUCTS: Product[] = [
       "100% Authentic"
     ]
   }
-];
+]

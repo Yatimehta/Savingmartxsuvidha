@@ -3,59 +3,75 @@
 :root {
   --primary-green: #1b5e20;
   --primary-green-dark: #144618;
-  --primary-green-light: #2e7d32;
   --secondary-orange: #ff6f00;
   --secondary-orange-hover: #e65100;
-  --accent-lime: #7cb342;
-  --accent-lime-hover: #689f38;
-  --background: #f8f9fa;
-  --foreground: #1f2937;
-  --card-bg: #ffffff;
-  --border-color: #e5e7eb;
+  --warm-yellow: #ffc107;
+  --dark-charcoal: #1a1a1a;
+  --off-white: #fffbf0;
+  --pastel-green: #c8e6c9;
+  --pastel-peach: #ffcc99;
+  --pastel-yellow: #fff9c4;
+  --light-gray: #f5f5f5;
+  --border-subtle: #e0e0e0;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  background-color: var(--off-white);
+  color: var(--dark-charcoal);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
 }
 
-/* Custom Utilities for VegiMart Brand */
-.bg-vegimart-green {
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-outfit), var(--font-inter), sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* Custom Brand Color Utilities */
+.bg-forest-green {
   background-color: #1b5e20;
 }
-.bg-vegimart-green-dark {
-  background-color: #144618;
-}
-.bg-vegimart-green-light {
-  background-color: #2e7d32;
-}
-.text-vegimart-green {
+.text-forest-green {
   color: #1b5e20;
 }
-.border-vegimart-green {
+.border-forest-green {
   border-color: #1b5e20;
 }
 
-.bg-vegimart-orange {
+.bg-vibrant-orange {
   background-color: #ff6f00;
 }
-.bg-vegimart-orange-hover:hover {
+.bg-vibrant-orange-hover:hover {
   background-color: #e65100;
 }
-.text-vegimart-orange {
+.text-vibrant-orange {
   color: #ff6f00;
 }
-.border-vegimart-orange {
+.border-vibrant-orange {
   border-color: #ff6f00;
 }
 
-.bg-vegimart-lime {
-  background-color: #7cb342;
+.bg-warm-yellow {
+  background-color: #ffc107;
 }
-.text-vegimart-lime {
-  color: #7cb342;
+.text-warm-yellow {
+  color: #ffc107;
+}
+
+.bg-pastel-green {
+  background-color: #c8e6c9;
+}
+.bg-pastel-peach {
+  background-color: #ffcc99;
+}
+.bg-pastel-yellow {
+  background-color: #fff9c4;
+}
+.bg-off-white {
+  background-color: #fffbf0;
+}
+.bg-light-gray {
+  background-color: #f5f5f5;
 }
 
 /* Modern smooth scrollbar */

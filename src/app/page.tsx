@@ -19,178 +19,187 @@ import { ProductCard } from '@/components/products/ProductCard';
 
 export default function HomePage() {
   const allProducts = db.getProducts();
-  const featuredProduce = allProducts.filter((p) => p.isFeatured && p.category !== 'suvidha-cafe').slice(0, 4);
-  const suvidhaSpecials = allProducts.filter((p) => p.category === 'suvidha-cafe').slice(0, 4);
-  const weeklyDeals = allProducts.filter((p) => p.originalPrice !== undefined).slice(0, 4);
+  const freshProduce = allProducts.filter((p) => p.category === 'Fresh Fruits & Vegetables').slice(0, 4);
+  const indianPantry = allProducts.filter((p) => p.category === 'Indian Pantry').slice(0, 4);
+  const weeklyDeals = allProducts.filter((p) => p.originalPrice && p.originalPrice > p.price).slice(0, 4);
   const settings = db.getSettings();
 
   const categories = [
     {
-      id: 'fruits',
-      name: 'Fresh Fruits',
-      tagline: 'Hand-picked daily',
-      color: 'from-amber-500/10 to-orange-500/20 border-orange-200 text-orange-800',
-      icon: '🍎',
-      count: allProducts.filter((p) => p.category === 'fruits').length
+      name: 'Fresh Fruits & Vegetables',
+      slug: 'fresh-fruits-and-vegetables',
+      tagline: 'Farm bananas, apples & spinach',
+      badge: 'Daily Harvest',
+      icon: '🍌',
+      count: allProducts.filter((p) => p.category === 'Fresh Fruits & Vegetables').length
     },
     {
-      id: 'vegetables',
-      name: 'Vegetables',
-      tagline: 'Crisp & farm-fresh',
-      color: 'from-green-500/10 to-emerald-500/20 border-green-200 text-green-800',
-      icon: '🥦',
-      count: allProducts.filter((p) => p.category === 'vegetables').length
+      name: 'Indian Pantry',
+      slug: 'indian-pantry',
+      tagline: 'Aashirvaad atta, basmati & spices',
+      badge: '100% Authentic',
+      icon: '🌾',
+      count: allProducts.filter((p) => p.category === 'Indian Pantry').length
     },
     {
-      id: 'suvidha-cafe',
-      name: 'Suvidha Cafe & Grocery',
-      tagline: 'Hot samosas & spices',
-      color: 'from-orange-500/10 to-red-500/20 border-orange-300 text-orange-900',
+      name: 'Daily Essentials',
+      slug: 'daily-essentials',
+      tagline: 'Sugar, Taj tea & breakfast',
+      badge: 'Pantry Staples',
       icon: '☕',
-      count: allProducts.filter((p) => p.category === 'suvidha-cafe').length
+      count: allProducts.filter((p) => p.category === 'Daily Essentials').length
     },
     {
-      id: 'dairy-bakery',
-      name: 'Dairy & Bakery',
-      tagline: 'Sourdough & milk',
-      color: 'from-yellow-500/10 to-amber-500/20 border-yellow-200 text-yellow-900',
-      icon: '🥖',
-      count: allProducts.filter((p) => p.category === 'dairy-bakery').length
+      name: 'Frozen',
+      slug: 'frozen',
+      tagline: 'Samosas, green peas & rotis',
+      badge: 'Ready to Cook',
+      icon: '🥟',
+      count: allProducts.filter((p) => p.category === 'Frozen').length
     },
     {
-      id: 'pantry',
-      name: 'Pantry Essentials',
-      tagline: 'Raw honey & oils',
-      color: 'from-lime-500/10 to-emerald-500/20 border-lime-200 text-lime-900',
-      icon: '🍯',
-      count: allProducts.filter((p) => p.category === 'pantry').length
+      name: 'Snacks & Munchies',
+      slug: 'snacks-munchies',
+      tagline: 'Haldiram bhujia & Parle-G',
+      badge: 'Tea-time Treats',
+      icon: '🍪',
+      count: allProducts.filter((p) => p.category === 'Snacks & Munchies').length
+    },
+    {
+      name: 'Dairy Eggs & Fridge',
+      slug: 'dairy-eggs-fridge',
+      tagline: 'Paneer, yogurt, milk & butter',
+      badge: 'Chilled Daily',
+      icon: '🥛',
+      count: allProducts.filter((p) => p.category === 'Dairy Eggs & Fridge').length
+    },
+    {
+      name: 'Dry Fruits & Seeds',
+      slug: 'dry-fruits-nuts-and-seeds',
+      tagline: 'Almonds, cashews & raisins',
+      badge: 'Premium Dry Fruits',
+      icon: '🥜',
+      count: allProducts.filter((p) => p.category === 'Dry Fruits & Seeds').length
+    },
+    {
+      name: 'Drinks',
+      slug: 'drinks',
+      tagline: 'Mango juices & sodas',
+      badge: 'Cold Drinks',
+      icon: '🧃',
+      count: allProducts.filter((p) => p.category === 'Drinks').length
     }
   ];
 
   return (
-    <div className="space-y-12 pb-16">
-      {/* HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-green-900 via-green-800 to-emerald-950 text-white pt-10 pb-16 md:py-20">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
-        
-        {/* Decorative soft glow */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-vegimart-orange/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-lime-400/20 rounded-full blur-3xl pointer-events-none" />
+    <div className="space-y-12 pb-16 bg-[#FFFBF0]">
+      {/* AUTHENTIC ASYMMETRICAL HERO SECTION */}
+      <section className="relative overflow-hidden bg-[#FFFBF0] border-b border-[#E0E0E0] pt-8 pb-12 md:pt-12 md:pb-16">
+        {/* Subtle diagonal background shape */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#C8E6C9]/30 rounded-bl-[80px] -z-0 pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-48 h-24 bg-[#FFCC99]/20 rounded-tr-[40px] -z-0 pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Hero Left Content */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold text-emerald-200">
-                <Leaf className="w-4 h-4 text-lime-400" />
-                <span>VegiMart × Suvidha Co-Branded Grocery</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-vegimart-orange" />
-                <span className="text-orange-300">2-Hour Express</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-left">
+            {/* Hero Left Content (70% asymmetric emphasis) */}
+            <div className="lg:col-span-8 space-y-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[4px] bg-[#C8E6C9] text-[#1B5E20] text-xs font-bold border border-[#1B5E20]/20">
+                <Leaf className="w-3.5 h-3.5 text-[#1B5E20]" />
+                <span>100% SOURCED EXCLUSIVELY FROM GROCERZ.COM.AU</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1]">
-                Crisp Farm Produce meets{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-lime-300">
-                  Suvidha Cafe Delights.
-                </span>
+              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black tracking-tight text-[#1B5E20] leading-[1.15]">
+                Fresh Produce & Authentic Indian Pantry, <br />
+                <span className="text-[#FF6F00]">Delivered Across Australia.</span>
               </h1>
 
-              <p className="text-base sm:text-lg text-emerald-100/90 max-w-2xl leading-relaxed">
-                Experience the freshest Australian fruits, garden-picked vegetables, and authentic Suvidha hot samosas & specialty Indian groceries — all delivered with dual payment gateway checkout flexibility.
+              <p className="text-base sm:text-lg text-[#1A1A1A] max-w-2xl font-normal leading-relaxed">
+                Enjoy real Australian farm produce, Aashirvaad chakki atta, Fortune basmati rice, Haldiram namkeens, and daily essentials with transparent AUD pricing and live dual payment checkout (Stripe + Razorpay).
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                 <Link
                   href="/catalog"
-                  className="bg-vegimart-orange hover:bg-orange-600 text-white font-bold px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-orange-600/30 transition-all hover:scale-[1.02] text-sm sm:text-base"
+                  className="bg-[#FF6F00] hover:bg-[#E65100] text-white font-bold px-7 py-3 rounded-[8px] flex items-center justify-center gap-2 shadow-sm transition-all hover:-translate-y-0.5 text-sm sm:text-base"
                 >
-                  Shop Fresh Produce <ArrowRight className="w-5 h-5" />
+                  Shop 51 Grocerz Products <ArrowRight className="w-4 h-4" />
                 </Link>
 
                 <Link
-                  href="/catalog?category=suvidha-cafe"
-                  className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-semibold px-6 py-3.5 rounded-2xl flex items-center justify-center gap-2 border border-white/20 transition-all text-sm sm:text-base"
+                  href="/catalog?category=indian-pantry"
+                  className="bg-white hover:bg-[#FFF9C4] text-[#1B5E20] font-bold px-6 py-3 rounded-[8px] flex items-center justify-center gap-2 border border-[#1B5E20] transition-colors text-sm sm:text-base"
                 >
-                  <Coffee className="w-5 h-5 text-orange-400" />
-                  Explore Suvidha Cafe
+                  <Coffee className="w-4 h-4 text-[#FF6F00]" />
+                  Explore Indian Pantry
                 </Link>
               </div>
 
               {/* Quick Perks */}
-              <div className="grid grid-cols-3 gap-3 pt-6 border-t border-white/10 text-xs text-emerald-100">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-lime-400 shrink-0" />
-                  <span>2-Hr Delivery Slots</span>
+              <div className="grid grid-cols-3 gap-3 pt-4 border-t border-gray-200 text-xs text-[#1A1A1A] font-medium">
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-4 h-4 text-[#FF6F00] shrink-0" />
+                  <span>Fast 2-Hour Slots</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Leaf className="w-4 h-4 text-lime-400 shrink-0" />
-                  <span>100% Farm Direct</span>
+                <div className="flex items-center gap-1.5">
+                  <Leaf className="w-4 h-4 text-[#1B5E20] shrink-0" />
+                  <span>Genuine Grocerz Stock</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CreditCard className="w-4 h-4 text-orange-400 shrink-0" />
-                  <span>Stripe & Razorpay</span>
+                <div className="flex items-center gap-1.5">
+                  <CreditCard className="w-4 h-4 text-[#FF6F00] shrink-0" />
+                  <span>Stripe & Razorpay Active</span>
                 </div>
               </div>
             </div>
 
-            {/* Hero Right Visual Feature Card */}
-            <div className="lg:col-span-5 relative">
-              <div className="bg-white/10 backdrop-blur-xl p-6 rounded-3xl border border-white/20 shadow-2xl space-y-5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-emerald-400 animate-ping" />
-                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-300">
-                      Live Delivery Hub
-                    </span>
-                  </div>
-                  <span className="text-xs text-white/80 bg-black/20 px-2.5 py-1 rounded-full">
-                    Active Gateway: <strong className="text-vegimart-orange uppercase">{settings.activeGateway}</strong>
+            {/* Hero Right Visual Card (30% asymmetric accent) */}
+            <div className="lg:col-span-4 relative">
+              <div className="bg-white p-5 rounded-[8px] border border-[#E0E0E0] shadow-sm space-y-4 text-left">
+                <div className="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                  <span className="text-xs font-bold text-[#1B5E20] uppercase tracking-wide">
+                    Featured Grocerz Pick
+                  </span>
+                  <span className="text-[10px] text-white bg-[#FF6F00] font-bold px-2 py-0.5 rounded-[4px]">
+                    In Stock
                   </span>
                 </div>
 
-                {/* Produce Spotlight Preview */}
-                <div className="space-y-3">
-                  <div className="p-3 bg-white/10 rounded-2xl flex items-center gap-3.5 border border-white/10">
-                    <img
-                      src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=200&q=80"
-                      alt="Suvidha Samosa"
-                      className="w-14 h-14 object-cover rounded-xl shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-orange-300">Suvidha Cafe Hot Samosas</p>
-                      <p className="text-white font-bold text-sm truncate">Handmade Crispy 4 Pcs Platter</p>
-                      <p className="text-xs text-emerald-200 font-bold mt-0.5">$8.50 with Mint Chutney</p>
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-white/10 rounded-2xl flex items-center gap-3.5 border border-white/10">
-                    <img
-                      src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=200&q=80"
-                      alt="Pink Lady Apples"
-                      className="w-14 h-14 object-cover rounded-xl shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-emerald-300">Victorian Farm Harvest</p>
-                      <p className="text-white font-bold text-sm truncate">Pink Lady Crisp Apples</p>
-                      <p className="text-xs text-emerald-200 font-bold mt-0.5">$4.80 / kg (Special)</p>
-                    </div>
+                <div className="p-3 bg-[#FFFBF0] rounded-[6px] border border-[#E0E0E0] flex items-center gap-3">
+                  <img
+                    src="https://www.grocerz.com.au/storage/uploads/products/medium/904_1701386762_2615.jpg"
+                    alt="Aashirvaad Atta"
+                    className="w-16 h-16 object-contain rounded-[4px] bg-white p-1 border border-gray-200 shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[11px] font-bold text-[#1B5E20]">Aashirvaad Atta</p>
+                    <p className="text-[#1A1A1A] font-bold text-xs truncate">Sudh Chakki Atta Export 10kg</p>
+                    <p className="text-xs text-[#FF6F00] font-black mt-0.5">$17.99 AUD</p>
                   </div>
                 </div>
 
-                {/* Special Promo code teaser */}
-                <div className="p-3.5 bg-gradient-to-r from-orange-500/30 to-amber-500/20 rounded-2xl border border-orange-400/30 flex items-center justify-between">
+                <div className="p-3 bg-[#FFFBF0] rounded-[6px] border border-[#E0E0E0] flex items-center gap-3">
+                  <img
+                    src="https://www.grocerz.com.au/storage/uploads/products/medium/1665_1731633519_2302.jpg"
+                    alt="Fresh Bananas"
+                    className="w-16 h-16 object-contain rounded-[4px] bg-white p-1 border border-gray-200 shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[11px] font-bold text-[#1B5E20]">Fresh Produce</p>
+                    <p className="text-[#1A1A1A] font-bold text-xs truncate">Grocerz Bananas (450g-550g)</p>
+                    <p className="text-xs text-[#FF6F00] font-black mt-0.5">$1.89 AUD</p>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-[#C8E6C9]/50 rounded-[6px] border border-[#C8E6C9] flex items-center justify-between text-xs">
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-orange-200 tracking-wider">
-                      Welcome Deal
-                    </span>
-                    <p className="text-sm font-black text-white">Use code FRESH10 for $10 OFF</p>
+                    <span className="font-bold text-[#1B5E20] block">Special Promo: GROCERZ10</span>
+                    <span className="text-[11px] text-gray-600">Free delivery on orders $50+</span>
                   </div>
                   <Link
                     href="/catalog"
-                    className="bg-vegimart-orange text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs"
+                    className="bg-[#FF6F00] hover:bg-[#E65100] text-white font-bold px-2.5 py-1 rounded-[4px] text-xs"
                   >
-                    Apply
+                    Claim
                   </Link>
                 </div>
               </div>
@@ -199,186 +208,189 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CATEGORY EXPLORER */}
+      {/* CATEGORY EXPLORER - ALL 8 GROCERZ CATEGORIES */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-black text-gray-900">
-              Shop by Category
+        <div className="flex items-center justify-between mb-5">
+          <div className="text-left">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1B5E20]">
+              Shop 8 Grocerz Categories
             </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              Fresh Australian produce & Suvidha ethnic cafe delights
+            <p className="text-xs text-gray-600 mt-0.5 font-medium">
+              Verified Australian inventory sourced directly from Grocerz.com.au
             </p>
           </div>
           <Link
             href="/catalog"
-            className="text-sm font-semibold text-vegimart-green hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-[#FF6F00] hover:underline flex items-center gap-1"
           >
-            View All ({allProducts.length}) <ChevronRight className="w-4 h-4" />
+            All Products ({allProducts.length}) <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3.5">
           {categories.map((cat) => (
             <Link
-              key={cat.id}
-              href={`/catalog?category=${cat.id}`}
-              className={`p-4 rounded-2xl border bg-gradient-to-b ${cat.color} hover:shadow-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group`}
+              key={cat.slug}
+              href={`/catalog?category=${cat.slug}`}
+              className="p-3.5 bg-white rounded-[8px] border border-[#E0E0E0] hover:bg-[#C8E6C9]/40 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between text-left group shadow-2xs"
             >
-              <div className="text-3xl mb-3">{cat.icon}</div>
-              <div>
-                <h3 className="font-bold text-base group-hover:text-vegimart-orange transition-colors">
-                  {cat.name}
-                </h3>
-                <p className="text-xs text-gray-600 mt-0.5">{cat.tagline}</p>
-                <span className="inline-block mt-3 text-[11px] font-semibold bg-white/80 px-2 py-0.5 rounded-full">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-2xl">{cat.icon}</span>
+                <span className="text-[10px] font-bold bg-[#FFF9C4] text-[#1A1A1A] px-1.5 py-0.5 rounded-[4px] border border-[#FFC107]/40">
                   {cat.count} items
                 </span>
+              </div>
+              <div>
+                <h3 className="font-bold text-sm text-[#1A1A1A] group-hover:text-[#1B5E20] transition-colors leading-tight">
+                  {cat.name}
+                </h3>
+                <p className="text-[11px] text-gray-500 mt-1 line-clamp-1">{cat.tagline}</p>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* TODAY'S FARM HARVEST (FEATURED) */}
+      {/* CATEGORY 1: FRESH PRODUCE SPOTLIGHT */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-green-100 rounded-xl text-vegimart-green">
-              <Leaf className="w-6 h-6" />
-            </div>
+        <div className="flex items-center justify-between mb-4 border-b border-gray-200 pb-2">
+          <div className="flex items-center gap-2 text-left">
+            <span className="p-1.5 bg-[#C8E6C9] rounded-[4px] text-[#1B5E20]">
+              <Leaf className="w-5 h-5" />
+            </span>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-gray-900">
-                Today&apos;s Farm Harvest
+              <h2 className="text-xl sm:text-2xl font-black text-[#1B5E20]">
+                Fresh Fruits & Vegetables
               </h2>
-              <p className="text-sm text-gray-500">
-                100% Australian grown, hand-selected at peak freshness
+              <p className="text-xs text-gray-500">
+                Direct Grocerz farm stock with Australian quality
               </p>
             </div>
           </div>
 
           <Link
-            href="/catalog"
-            className="hidden sm:flex items-center gap-1 text-sm font-bold text-vegimart-green hover:text-green-800"
+            href="/catalog?category=fresh-fruits-and-vegetables"
+            className="text-xs font-bold text-[#FF6F00] hover:text-[#E65100] flex items-center gap-1"
           >
-            See all produce <ChevronRight className="w-4 h-4" />
+            View all produce <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProduce.map((product) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {freshProduce.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </section>
 
-      {/* SUVIDHA GROCERY & CAFE SPOTLIGHT */}
+      {/* CATEGORY 2: INDIAN PANTRY SPOTLIGHT */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-gradient-to-r from-amber-900 via-orange-900 to-amber-950 text-white p-8 sm:p-12 shadow-xl relative overflow-hidden">
-          <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-500/20 via-transparent to-transparent pointer-events-none" />
-
-          <div className="relative z-10 space-y-6 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-600/60 rounded-full text-xs font-bold uppercase tracking-wider text-orange-100 border border-orange-400/40">
-              <Coffee className="w-3.5 h-3.5" />
-              Suvidha Cafe & Indian Grocery
+        <div className="rounded-[8px] bg-[#FFF9C4]/60 border border-[#FFC107] p-6 sm:p-8 text-left space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#FFC107]/40 pb-4">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#1B5E20] text-white text-[11px] font-bold rounded-[4px]">
+                <Sparkles className="w-3 h-3 text-[#FFC107]" />
+                Authentic Indian Pantry
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#1B5E20]">
+                Atta, Basmati Rice, Ghee & Spices
+              </h2>
+              <p className="text-xs text-gray-700">
+                Top brands: Aashirvaad, Fortune, Haldiram, Shan, and pure desi ghee
+              </p>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight">
-              Craving Fresh Cafe Samosas & Fragrant Spices?
-            </h2>
-
-            <p className="text-orange-100/90 text-sm sm:text-base leading-relaxed">
-              Order Suvidha&apos;s beloved housemade samosas, aged Himalayan basmati, stone-ground flours, and fresh paneer right alongside your daily fruit & vegetable haul.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Link
-                href="/catalog?category=suvidha-cafe"
-                className="bg-vegimart-orange hover:bg-orange-500 text-white font-bold px-6 py-3 rounded-2xl text-sm transition-all shadow-md flex items-center gap-2"
-              >
-                Shop Suvidha Specials <ArrowRight className="w-4 h-4" />
-              </Link>
-              <span className="text-xs text-orange-200">
-                ✓ Samosas baked & fried fresh every morning
-              </span>
-            </div>
+            <Link
+              href="/catalog?category=indian-pantry"
+              className="bg-[#FF6F00] hover:bg-[#E65100] text-white font-bold px-5 py-2.5 rounded-[6px] text-xs transition-colors self-start sm:self-auto shadow-2xs flex items-center gap-1.5"
+            >
+              Shop Indian Pantry <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
-            {suvidhaSpecials.map((product) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {indianPantry.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* WEEKLY SPECIAL DEALS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-orange-100 rounded-xl text-vegimart-orange">
-              <Flame className="w-6 h-6" />
+      {/* SPECIAL DEALS */}
+      {weeklyDeals.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-4 border-b border-gray-200 pb-2 text-left">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 bg-[#FFCC99] rounded-[4px] text-[#FF6F00]">
+                <Flame className="w-5 h-5" />
+              </span>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-black text-[#1B5E20]">
+                  Weekly Saver Deals
+                </h2>
+                <p className="text-xs text-gray-500">
+                  Real discounts on verified Grocerz essentials
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-gray-900">
-                Weekly Saver Specials
-              </h2>
-              <p className="text-sm text-gray-500">
-                Discounted prices on top-quality pantry and produce
-              </p>
-            </div>
+
+            <Link
+              href="/catalog"
+              className="text-xs font-bold text-[#FF6F00] hover:underline"
+            >
+              See all deals
+            </Link>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {weeklyDeals.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {weeklyDeals.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
 
-      {/* DUAL PAYMENT GATEWAY EXPLAINER BANNER */}
+      {/* DUAL PAYMENT GATEWAY AUDIT & SWITCHER CARD */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 rounded-3xl bg-white border border-gray-200/80 shadow-md">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-8 space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-50 text-vegimart-green rounded-full text-xs font-semibold border border-green-200">
-                <CreditCard className="w-3.5 h-3.5" />
-                <span>Enterprise Dual Gateway Backend</span>
+        <div className="p-6 rounded-[8px] bg-white border border-[#E0E0E0] shadow-xs text-left">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div className="lg:col-span-8 space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#C8E6C9] text-[#1B5E20] rounded-[4px] text-xs font-bold border border-emerald-300">
+                <CreditCard className="w-3.5 h-3.5 text-[#1B5E20]" />
+                <span>Enterprise Dual Gateway Switcher</span>
               </div>
-              <h3 className="text-2xl font-black text-gray-900">
-                Seamless Checkout Powered by Stripe or Razorpay
+              <h3 className="text-xl font-black text-[#1A1A1A]">
+                Dual Payment Gateway Backend (Stripe & Razorpay)
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Our backend features an intelligent payment adapter routing transactions seamlessly. Admins can switch between Stripe (Cards/Apple Pay) and Razorpay (UPI/Cards/Netbanking) in real time without altering the customer checkout flow.
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Admins can switch active payment processors in real time. Transactions, webhooks, and order statuses are tracked with zero downtime.
               </p>
-              <div className="flex items-center gap-6 pt-2 text-xs text-gray-500">
-                <span className="flex items-center gap-1.5 font-medium text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-emerald-600" /> Instant Gateway Switching
+              <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-gray-600 font-medium">
+                <span className="flex items-center gap-1 text-[#1B5E20]">
+                  <CheckCircle className="w-3.5 h-3.5" /> Instant Gateway Toggle
                 </span>
-                <span className="flex items-center gap-1.5 font-medium text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-emerald-600" /> Full Audit Transaction Logs
+                <span className="flex items-center gap-1 text-[#1B5E20]">
+                  <CheckCircle className="w-3.5 h-3.5" /> Full Audit Transaction Logs
                 </span>
-                <span className="flex items-center gap-1.5 font-medium text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-emerald-600" /> Webhook Event Sync
+                <span className="flex items-center gap-1 text-[#1B5E20]">
+                  <CheckCircle className="w-3.5 h-3.5" /> Stripe & Razorpay Test Simulators
                 </span>
               </div>
             </div>
 
-            <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-center gap-3">
-              <div className="p-4 bg-gray-50 rounded-2xl border border-gray-200 text-center w-full">
-                <p className="text-xs text-gray-500 font-medium">Currently Active Processor</p>
-                <p className="text-xl font-black text-vegimart-green uppercase mt-1">
+            <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-center gap-2.5">
+              <div className="p-3 bg-[#FFFBF0] rounded-[6px] border border-[#E0E0E0] text-center w-full">
+                <p className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Active Gateway</p>
+                <p className="text-lg font-black text-[#FF6F00] uppercase mt-0.5">
                   {settings.activeGateway} Gateway
                 </p>
-                <p className="text-[11px] text-gray-400 mt-0.5">Mode: Sandbox Simulator Ready</p>
               </div>
 
               <Link
                 href="/admin/payments"
-                className="w-full bg-gray-900 hover:bg-black text-white font-bold text-xs py-3 rounded-xl text-center transition-colors flex items-center justify-center gap-2 shadow-xs"
+                className="w-full bg-[#1B5E20] hover:bg-[#144618] text-white font-bold text-xs py-2.5 rounded-[6px] text-center transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
               >
-                Open Admin Gateway Switcher <ArrowRight className="w-4 h-4" />
+                Open Admin Gateway Switcher <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>

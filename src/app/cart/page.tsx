@@ -95,118 +95,128 @@ export default function CartPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-[#FFFBF0] text-left">
       {/* Title */}
-      <div className="flex items-center justify-between border-b border-gray-200 pb-4">
+      <div className="flex items-center justify-between border-b border-[#E0E0E0] pb-4">
         <div>
-          <h1 className="text-3xl font-black text-gray-900 tracking-tight">Shopping Basket</h1>
-          <p className="text-xs text-gray-500 mt-0.5">
-            {items.reduce((s, i) => s + i.quantity, 0)} fresh items in your basket
+          <h1 className="text-2xl sm:text-3xl font-black text-[#1B5E20] tracking-tight">
+            Shopping Cart
+          </h1>
+          <p className="text-xs text-gray-600 mt-0.5 font-medium">
+            {items.reduce((s, i) => s + i.quantity, 0)} verified Grocerz Australia items in your order
           </p>
         </div>
 
         <button
           onClick={clearCart}
-          className="text-xs text-gray-400 hover:text-rose-600 transition-colors"
+          className="text-xs text-gray-500 hover:text-rose-600 font-medium transition-colors"
         >
-          Clear Basket
+          Clear Cart
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left: Items List */}
+        {/* Left: Table-like Items List */}
         <div className="lg:col-span-8 space-y-4">
-          <div className="bg-white rounded-3xl border border-gray-200/80 p-4 sm:p-6 shadow-xs divide-y divide-gray-100">
-            {items.map((item) => (
-              <div key={item.product.id} className="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row gap-4 items-center">
-                {/* Item Image */}
-                <img
-                  src={item.product.image}
-                  alt={item.product.name}
-                  className="w-20 h-20 rounded-xl object-cover bg-gray-50 shrink-0"
-                />
+          <div className="bg-white rounded-[8px] border border-[#E0E0E0] p-4 sm:p-5 shadow-2xs">
+            {/* Table Header */}
+            <div className="hidden sm:grid grid-cols-12 gap-4 pb-3 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase tracking-wider">
+              <div className="col-span-6">Item Description</div>
+              <div className="col-span-3 text-center">Quantity</div>
+              <div className="col-span-2 text-right">Price (AUD)</div>
+              <div className="col-span-1 text-center"></div>
+            </div>
 
-                {/* Details */}
-                <div className="flex-1 w-full space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-vegimart-green uppercase">
-                      {item.product.categoryName}
-                    </span>
-                    <span className="text-xs font-bold text-gray-400 sm:hidden">
+            {/* Table Rows */}
+            <div className="divide-y divide-gray-100">
+              {items.map((item) => (
+                <div key={item.product.id} className="py-3.5 first:pt-2 last:pb-0 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                  {/* Left: Product Info (Col 6) */}
+                  <div className="sm:col-span-6 flex items-center gap-3">
+                    <img
+                      src={item.product.image}
+                      alt={item.product.name}
+                      className="w-16 h-16 rounded-[4px] object-contain bg-[#FFFBF0] p-1 border border-gray-200 shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <span className="text-[10px] font-bold text-[#1B5E20] block">
+                        {item.product.brand || 'Grocerz'} • {item.product.category}
+                      </span>
+                      <Link href={`/product/${item.product.id}`} className="block">
+                        <h3 className="font-bold text-[#1A1A1A] text-sm hover:text-[#1B5E20] transition-colors truncate">
+                          {item.product.name}
+                        </h3>
+                      </Link>
+                      <p className="text-xs text-gray-500 font-medium">
+                        ${item.product.price.toFixed(2)} AUD / {item.product.unit}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Center: Quantity (Col 3) */}
+                  <div className="sm:col-span-3 flex justify-start sm:justify-center">
+                    <div className="flex items-center border border-gray-300 rounded-[4px] bg-white p-0.5">
+                      <button
+                        onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                        className="w-6 h-6 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-[2px]"
+                        title="Decrease"
+                      >
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <span className="w-8 text-center text-xs font-bold text-[#1A1A1A]">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                        className="w-6 h-6 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-[2px]"
+                        title="Increase"
+                      >
+                        <Plus className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Right: Price (Col 2) */}
+                  <div className="sm:col-span-2 text-left sm:text-right">
+                    <span className="font-black text-base text-[#FF6F00]">
                       ${(item.product.price * item.quantity).toFixed(2)}
                     </span>
                   </div>
 
-                  <Link href={`/product/${item.product.id}`} className="block">
-                    <h3 className="font-bold text-gray-900 text-sm hover:text-vegimart-green transition-colors">
-                      {item.product.name}
-                    </h3>
-                  </Link>
-
-                  <p className="text-xs text-gray-500">
-                    ${item.product.price.toFixed(2)} {item.product.unit}
-                  </p>
-                </div>
-
-                {/* Quantity Controls */}
-                <div className="flex items-center justify-between w-full sm:w-auto gap-4">
-                  <div className="flex items-center border border-gray-200 rounded-xl bg-gray-50 p-0.5">
+                  {/* Far Right: Remove Button (Col 1) */}
+                  <div className="sm:col-span-1 text-right sm:text-center">
                     <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                      className="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-white rounded-lg transition-colors"
-                      title="Decrease"
+                      onClick={() => removeItem(item.product.id)}
+                      className="p-1 text-gray-400 hover:text-rose-600 transition-colors"
+                      title="Remove from Cart"
                     >
-                      <Minus className="w-3.5 h-3.5" />
-                    </button>
-                    <span className="w-8 text-center text-xs font-bold text-gray-900">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                      className="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-white rounded-lg transition-colors"
-                      title="Increase"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
-
-                  <div className="hidden sm:block text-right w-20">
-                    <span className="font-bold text-sm text-gray-900">
-                      ${(item.product.price * item.quantity).toFixed(2)}
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={() => removeItem(item.product.id)}
-                    className="p-2 text-gray-400 hover:text-rose-500 transition-colors"
-                    title="Remove item"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Delivery Slot Selector */}
-          <div className="bg-white rounded-3xl border border-gray-200/80 p-5 shadow-xs space-y-3">
-            <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
-              <Clock className="w-4 h-4 text-vegimart-green" />
-              Choose Delivery Slot
+          <div className="bg-white rounded-[8px] border border-[#E0E0E0] p-4 shadow-2xs space-y-2.5">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#1B5E20] uppercase tracking-wider">
+              <Clock className="w-4 h-4 text-[#FF6F00]" />
+              Select Australian Delivery Window
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               {deliverySlots.map((slot) => (
                 <button
                   key={slot.id}
                   onClick={() => setDeliverySlot(slot.id)}
-                  className={`p-3 rounded-2xl border text-left transition-all ${
+                  className={`p-2.5 rounded-[6px] border text-left transition-all ${
                     deliverySlot === slot.id
-                      ? 'border-vegimart-green bg-green-50/70 ring-1 ring-vegimart-green'
+                      ? 'border-[#1B5E20] bg-[#C8E6C9]/40 font-bold'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <p className="text-xs font-bold text-gray-900">{slot.label}</p>
-                  <p className="text-[11px] text-gray-500 mt-0.5">{slot.time}</p>
+                  <p className="text-xs font-bold text-[#1A1A1A]">{slot.label}</p>
+                  <p className="text-[11px] text-gray-600 mt-0.5">{slot.time}</p>
                 </button>
               ))}
             </div>
@@ -215,100 +225,95 @@ export default function CartPage() {
 
         {/* Right: Order Summary */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="bg-white rounded-3xl border border-gray-200/80 p-6 shadow-xs space-y-5">
-            <h2 className="text-lg font-bold text-gray-900">Order Breakdown</h2>
+          <div className="bg-white rounded-[8px] border border-[#E0E0E0] p-5 shadow-2xs space-y-4 text-left">
+            <h2 className="text-base font-bold text-[#1B5E20] uppercase tracking-wide">
+              Order Summary
+            </h2>
 
             {/* Promo Code Input */}
-            <form onSubmit={handleApplyPromo} className="space-y-2">
+            <form onSubmit={handleApplyPromo} className="space-y-1.5">
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={inputCode}
                   onChange={(e) => setInputCode(e.target.value)}
-                  placeholder="Promo code (e.g. FRESH10)"
-                  className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium uppercase tracking-wider focus:outline-hidden focus:border-vegimart-green"
+                  placeholder="Coupon (e.g. GROCERZ10)"
+                  className="flex-1 px-3 py-1.5 bg-[#FFFBF0] border border-gray-300 rounded-[4px] text-xs font-medium uppercase tracking-wider focus:outline-hidden focus:border-[#FF6F00]"
                 />
                 <button
                   type="submit"
-                  className="bg-gray-900 hover:bg-black text-white text-xs font-semibold px-4 py-2 rounded-xl transition-colors"
+                  className="bg-[#1B5E20] hover:bg-[#144618] text-white text-xs font-bold px-3.5 py-1.5 rounded-[4px] transition-colors"
                 >
                   Apply
                 </button>
               </div>
 
               {promoFeedback && (
-                <p className={`text-xs flex items-center gap-1 ${promoFeedback.success ? 'text-emerald-600 font-medium' : 'text-rose-500'}`}>
+                <p className={`text-xs flex items-center gap-1 ${promoFeedback.success ? 'text-[#1B5E20] font-bold' : 'text-rose-600'}`}>
                   {promoFeedback.success ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
                   {promoFeedback.message}
                 </p>
               )}
 
               {promoCode && !promoFeedback && (
-                <div className="flex items-center justify-between text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1.5 rounded-lg">
-                  <span className="font-semibold">Applied: {promoCode}</span>
-                  <button onClick={removePromoCode} className="text-rose-500 hover:underline">
+                <div className="flex items-center justify-between text-xs text-[#1B5E20] bg-[#C8E6C9]/50 px-2 py-1 rounded-[4px]">
+                  <span className="font-bold">Applied: {promoCode}</span>
+                  <button onClick={removePromoCode} className="text-rose-500 hover:underline text-xs">
                     Remove
                   </button>
                 </div>
               )}
             </form>
 
-            {/* Cost Breakdown */}
-            <div className="space-y-2.5 text-xs text-gray-600 border-t border-gray-100 pt-4">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span className="font-semibold text-gray-900">${subtotal.toFixed(2)}</span>
+            {/* Cost Breakdown with increasing font size */}
+            <div className="space-y-2 text-xs text-gray-600 border-t border-gray-200 pt-3">
+              <div className="flex justify-between items-center">
+                <span>Items Subtotal</span>
+                <span className="font-bold text-[#1A1A1A]">${subtotal.toFixed(2)} AUD</span>
               </div>
 
               {discount > 0 && (
-                <div className="flex justify-between text-emerald-600 font-medium">
+                <div className="flex justify-between items-center text-[#1B5E20] font-bold">
                   <span>Discount ({promoCode})</span>
                   <span>-${discount.toFixed(2)}</span>
                 </div>
               )}
 
               <div className="flex justify-between items-center">
-                <span className="flex items-center gap-1">
-                  Delivery Fee
-                  {subtotal >= 50 && (
-                    <span className="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded">
-                      Free over $50
-                    </span>
-                  )}
-                </span>
-                <span className="font-semibold text-gray-900">
-                  {deliveryFee === 0 ? <strong className="text-emerald-600 font-bold">FREE</strong> : `$${deliveryFee.toFixed(2)}`}
+                <span>Delivery (Express)</span>
+                <span className="font-bold text-[#1A1A1A]">
+                  {deliveryFee === 0 ? <span className="text-[#1B5E20] font-bold">FREE (Over $50)</span> : `$${deliveryFee.toFixed(2)} AUD`}
                 </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span>GST (10% included)</span>
-                <span className="font-semibold text-gray-900">${tax.toFixed(2)}</span>
+                <span className="font-bold text-[#1A1A1A]">${tax.toFixed(2)} AUD</span>
               </div>
 
               <div className="border-t border-gray-200 pt-3 flex justify-between items-baseline">
-                <span className="text-sm font-bold text-gray-900">Total</span>
-                <span className="text-2xl font-black text-vegimart-green">${total.toFixed(2)}</span>
+                <span className="text-sm font-black text-[#1A1A1A]">Estimated Total</span>
+                <span className="text-2xl font-black text-[#FF6F00]">${total.toFixed(2)} AUD</span>
               </div>
             </div>
 
-            {/* Proceed to Checkout Button */}
+            {/* Proceed to Checkout Button (Large Orange) */}
             <button
               onClick={() => router.push('/checkout')}
-              className="w-full bg-vegimart-orange hover:bg-orange-600 text-white font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all"
+              className="w-full bg-[#FF6F00] hover:bg-[#E65100] text-white font-bold py-3 rounded-[6px] flex items-center justify-center gap-2 shadow-sm transition-all hover:-translate-y-0.5 text-sm"
             >
               Proceed to Checkout <ArrowRight className="w-4 h-4" />
             </button>
 
-            {/* Delivery Guarantees */}
-            <div className="space-y-2 pt-2 border-t border-gray-100 text-[11px] text-gray-500">
+            {/* Trust Badges */}
+            <div className="space-y-1.5 pt-2 border-t border-gray-100 text-[11px] text-gray-500">
               <div className="flex items-center gap-2">
-                <Truck className="w-3.5 h-3.5 text-vegimart-green" />
-                <span>Estimated arrival: Today in your selected slot</span>
+                <Truck className="w-3.5 h-3.5 text-[#FF6F00]" />
+                <span>Fast 2-hour dispatch across Melbourne VIC</span>
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-vegimart-green" />
-                <span>Dual payment gateway checkout with instant refund protection</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-[#1B5E20]" />
+                <span>Dual payment gateway (Stripe & Razorpay supported)</span>
               </div>
             </div>
           </div>

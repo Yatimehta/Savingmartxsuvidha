@@ -91,287 +91,188 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10 bg-[#FFFBF0] text-left">
       {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-xs text-gray-500">
-        <Link href="/" className="hover:text-vegimart-green">Home</Link>
+        <Link href="/" className="hover:text-[#1B5E20]">Home</Link>
         <span>/</span>
-        <Link href="/catalog" className="hover:text-vegimart-green">Catalog</Link>
+        <Link href="/catalog" className="hover:text-[#1B5E20]">Grocerz Catalog</Link>
         <span>/</span>
-        <Link href={`/catalog?category=${product.category}`} className="hover:text-vegimart-green">
-          {product.categoryName}
+        <Link href={`/catalog?category=${product.categorySlug || 'all'}`} className="hover:text-[#1B5E20]">
+          {product.category}
         </Link>
         <span>/</span>
-        <span className="text-gray-800 font-medium truncate max-w-xs">{product.name}</span>
+        <span className="text-[#1A1A1A] font-bold truncate max-w-xs">{product.name}</span>
       </nav>
 
-      {/* Main Product Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        {/* Left Gallery */}
-        <div className="lg:col-span-6 space-y-4">
-          <div className="relative aspect-4/3 rounded-3xl overflow-hidden bg-white border border-gray-200/80 shadow-md">
+      {/* Main Product Layout (60% Left Gallery / 40% Right Details) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left Gallery (60% width) */}
+        <div className="lg:col-span-7 space-y-4">
+          <div className="relative aspect-4/3 rounded-[8px] overflow-hidden bg-white border border-[#E0E0E0] p-4 flex items-center justify-center">
             <img
               src={product.image}
               alt={product.name}
               onError={(e) => {
                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80';
               }}
-              className="w-full h-full object-cover"
+              className="max-h-full max-w-full object-contain"
             />
-            {product.originalPrice && (
-              <span className="absolute top-4 left-4 bg-vegimart-orange text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                Special • Save ${(product.originalPrice - product.price).toFixed(2)}
+            {product.originalPrice && product.originalPrice > product.price && (
+              <span className="absolute top-3 left-3 bg-[#FF6F00] text-white text-xs font-bold px-2.5 py-1 rounded-[4px] shadow-2xs">
+                Save ${(product.originalPrice - product.price).toFixed(2)} AUD
               </span>
             )}
             <button
               onClick={() => toggleWishlist(product.id)}
-              className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-md transition-all ${
-                isInWishlist ? 'bg-white text-rose-500' : 'bg-white/80 text-gray-600 hover:text-rose-500'
+              className={`absolute top-3 right-3 p-2 rounded-[6px] bg-white border border-gray-200 transition-all ${
+                isInWishlist ? 'text-rose-500' : 'text-gray-400 hover:text-rose-500'
               }`}
               title="Add to wishlist"
             >
-              <Heart className={`w-5 h-5 ${isInWishlist ? 'fill-rose-500' : ''}`} />
+              <Heart className={`w-4 h-4 ${isInWishlist ? 'fill-rose-500' : ''}`} />
             </button>
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-3 bg-white rounded-xl border border-gray-200 text-center">
-              <span className="text-[10px] text-gray-400 uppercase font-semibold">Origin</span>
-              <p className="text-xs font-bold text-gray-800 truncate mt-0.5">{product.origin}</p>
+            <div className="p-2.5 bg-white rounded-[6px] border border-[#E0E0E0] text-center">
+              <span className="text-[10px] text-gray-500 uppercase font-bold">Source</span>
+              <p className="text-xs font-bold text-[#1B5E20] truncate mt-0.5">Grocerz.com.au</p>
             </div>
-            <div className="p-3 bg-white rounded-xl border border-gray-200 text-center">
-              <span className="text-[10px] text-gray-400 uppercase font-semibold">Freshness</span>
-              <p className="text-xs font-bold text-emerald-700 truncate mt-0.5">{product.freshnessBadge}</p>
+            <div className="p-2.5 bg-white rounded-[6px] border border-[#E0E0E0] text-center">
+              <span className="text-[10px] text-gray-500 uppercase font-bold">Brand</span>
+              <p className="text-xs font-bold text-[#1A1A1A] truncate mt-0.5">{product.brand || 'Grocerz'}</p>
             </div>
-            <div className="p-3 bg-white rounded-xl border border-gray-200 text-center">
-              <span className="text-[10px] text-gray-400 uppercase font-semibold">Availability</span>
-              <p className="text-xs font-bold text-gray-800 truncate mt-0.5">
-                {product.inStock ? `${product.stockCount} in stock` : 'Out of Stock'}
+            <div className="p-2.5 bg-white rounded-[6px] border border-[#E0E0E0] text-center">
+              <span className="text-[10px] text-gray-500 uppercase font-bold">Availability</span>
+              <p className="text-xs font-bold text-[#1B5E20] truncate mt-0.5">
+                {product.inStock ? `${product.stockCount || 25} in stock` : 'Out of Stock'}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Right Details */}
-        <div className="lg:col-span-6 space-y-6">
-          <div className="space-y-2">
+        {/* Right Details (40% width) */}
+        <div className="lg:col-span-5 space-y-5">
+          <div className="space-y-1.5">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 bg-green-50 text-vegimart-green text-xs font-bold rounded-lg uppercase tracking-wider">
-                {product.categoryName}
+              <span className="px-2 py-0.5 bg-[#C8E6C9] text-[#1B5E20] text-[11px] font-bold rounded-[4px]">
+                {product.category}
               </span>
-              {product.category === 'suvidha-cafe' && (
-                <span className="px-2.5 py-1 bg-orange-50 text-vegimart-orange text-xs font-bold rounded-lg flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" /> Suvidha Specialty
-                </span>
-              )}
+              <span className="text-xs text-gray-500 font-medium">Verified Grocerz Australia Listing</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-black text-gray-900 leading-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#1B5E20] leading-snug">
               {product.name}
             </h1>
 
             {/* Rating & Reviews */}
-            <div className="flex items-center gap-3 pt-1">
-              <div className="flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
-                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span className="font-bold text-sm text-amber-900">{product.rating}</span>
+            <div className="flex items-center gap-2 pt-1 text-xs">
+              <div className="flex items-center gap-1 bg-[#FFF9C4] px-2 py-0.5 rounded-[4px] border border-[#FFC107]/50 font-bold text-gray-800">
+                <Star className="w-3.5 h-3.5 fill-[#FFC107] text-[#FFC107]" />
+                <span>{product.rating}</span>
               </div>
-              <span className="text-xs text-gray-500">Based on {product.reviewsCount} verified customer ratings</span>
+              <span className="text-gray-500">({product.reviewsCount} verified reviews)</span>
             </div>
           </div>
 
           {/* Pricing Box */}
-          <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 flex items-baseline justify-between">
+          <div className="p-3.5 rounded-[6px] bg-white border border-[#E0E0E0] flex items-baseline justify-between">
             <div>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-gray-900">
+                <span className="text-3xl font-black text-[#FF6F00]">
                   ${product.price.toFixed(2)}
                 </span>
-                {product.originalPrice && (
-                  <span className="text-base text-gray-400 line-through">
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <span className="text-sm text-gray-400 line-through font-normal">
                     ${product.originalPrice.toFixed(2)}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-gray-500 mt-0.5">Price {product.unit} (incl. GST)</p>
+              <p className="text-xs text-gray-600 mt-0.5 font-medium">Unit: {product.unit} (AUD)</p>
             </div>
 
-            <div className="text-right">
-              <span className="inline-block px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                {product.inStock ? '✓ Ready to pack' : 'Temporarily Out of Stock'}
-              </span>
-            </div>
+            <span className="px-2 py-0.5 rounded-[4px] text-xs font-bold bg-[#C8E6C9] text-[#1B5E20]">
+              ✓ Available for Delivery
+            </span>
           </div>
 
           {/* Quantity and Add to Cart */}
-          <div className="space-y-3 pt-2">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center border border-gray-300 rounded-2xl bg-white p-1 shadow-inner">
+          <div className="space-y-2.5 pt-1">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center border border-[#E0E0E0] rounded-[6px] bg-white p-1">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-xl"
+                  className="w-8 h-8 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-[4px]"
                   title="Decrease quantity"
                 >
-                  <Minus className="w-4 h-4" />
+                  <Minus className="w-3.5 h-3.5" />
                 </button>
-                <span className="w-12 text-center font-bold text-sm text-gray-900">
+                <span className="w-10 text-center font-bold text-sm text-[#1A1A1A]">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity((q) => q + 1)}
-                  className="w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-xl"
+                  className="w-8 h-8 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-[4px]"
                   title="Increase quantity"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-3.5 h-3.5" />
                 </button>
               </div>
 
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className={`flex-1 py-3.5 px-6 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md ${
+                className={`flex-1 h-[45px] px-5 rounded-[6px] font-bold text-sm flex items-center justify-center gap-2 transition-all text-white ${
                   added
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-vegimart-green hover:bg-green-800 text-white hover:scale-[1.01]'
+                    ? 'bg-[#1B5E20]'
+                    : 'bg-[#FF6F00] hover:bg-[#E65100] hover:-translate-y-0.5 shadow-2xs'
                 }`}
               >
                 {added ? (
                   <>
-                    <Check className="w-5 h-5" /> Added to Basket!
+                    <Check className="w-4 h-4" /> Added to Cart!
                   </>
                 ) : (
                   <>
-                    <Plus className="w-5 h-5" /> Add {(quantity * product.price).toLocaleString('en-US', { style: 'currency', currency: 'AUD' })} to Cart
+                    <Plus className="w-4 h-4" /> Add ${(quantity * product.price).toFixed(2)} AUD to Cart
                   </>
                 )}
               </button>
             </div>
 
-            <p className="text-xs text-gray-500 text-center flex items-center justify-center gap-1.5 pt-1">
-              <Truck className="w-4 h-4 text-vegimart-orange" />
-              Order in the next <strong>45 mins</strong> for today&apos;s morning slot delivery.
+            <p className="text-xs text-gray-600 flex items-center gap-1.5 pt-1">
+              <Truck className="w-3.5 h-3.5 text-[#FF6F00]" />
+              Order in the next <strong>45 mins</strong> for today&apos;s express slot.
             </p>
           </div>
 
-          {/* Dietary Tags */}
-          <div className="space-y-2 pt-2 border-t border-gray-100">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Highlights</span>
-            <div className="flex flex-wrap gap-2">
-              {product.dietary.map((tag, i) => (
-                <span key={i} className="px-3 py-1 bg-gray-100 rounded-full text-xs font-medium text-gray-700">
-                  ✓ {tag}
-                </span>
-              ))}
-            </div>
+          {/* Authentic Description & Details */}
+          <div className="space-y-3 pt-3 border-t border-[#E0E0E0]">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+              Product Overview
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+              {product.description}
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Tabs: Description, Nutrition, Reviews */}
-      <div className="bg-white rounded-3xl border border-gray-200/80 p-6 sm:p-8 shadow-xs space-y-6">
-        <div className="flex items-center gap-8 border-b border-gray-200 text-sm font-bold">
-          <button
-            onClick={() => setSelectedTab('details')}
-            className={`pb-3 transition-colors relative ${
-              selectedTab === 'details'
-                ? 'text-vegimart-green border-b-2 border-vegimart-green'
-                : 'text-gray-400 hover:text-gray-700'
-            }`}
-          >
-            Produce Story & Description
-          </button>
-          <button
-            onClick={() => setSelectedTab('nutrition')}
-            className={`pb-3 transition-colors relative ${
-              selectedTab === 'nutrition'
-                ? 'text-vegimart-green border-b-2 border-vegimart-green'
-                : 'text-gray-400 hover:text-gray-700'
-            }`}
-          >
-            Nutritional Information
-          </button>
-          <button
-            onClick={() => setSelectedTab('reviews')}
-            className={`pb-3 transition-colors relative ${
-              selectedTab === 'reviews'
-                ? 'text-vegimart-green border-b-2 border-vegimart-green'
-                : 'text-gray-400 hover:text-gray-700'
-            }`}
-          >
-            Verified Customer Reviews ({product.reviewsCount})
-          </button>
-        </div>
-
-        {selectedTab === 'details' && (
-          <div className="space-y-4 max-w-3xl text-sm text-gray-600 leading-relaxed">
-            <p>{product.description}</p>
-            <div className="p-4 bg-green-50/60 rounded-2xl border border-green-100 space-y-2">
-              <h4 className="font-bold text-vegimart-green text-sm flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4" /> VegiMart Quality Pledge
-              </h4>
-              <p className="text-xs text-emerald-950">
-                If this produce doesn&apos;t meet your standard of crispness and taste, message us on WhatsApp or in your customer dashboard for an instant refund or replacement with your next order.
-              </p>
-            </div>
-          </div>
-        )}
-
-        {selectedTab === 'nutrition' && (
-          <div className="max-w-xl space-y-4">
-            <p className="text-xs text-gray-500">Per Serving: <strong>{product.nutrition.servingSize}</strong></p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="p-3 bg-gray-50 rounded-xl text-center">
-                <span className="text-[10px] text-gray-400 uppercase font-bold">Energy</span>
-                <p className="text-sm font-bold text-gray-900 mt-0.5">{product.nutrition.calories}</p>
-              </div>
-              <div className="p-3 bg-gray-50 rounded-xl text-center">
-                <span className="text-[10px] text-gray-400 uppercase font-bold">Protein</span>
-                <p className="text-sm font-bold text-gray-900 mt-0.5">{product.nutrition.protein}</p>
-              </div>
-              <div className="p-3 bg-gray-50 rounded-xl text-center">
-                <span className="text-[10px] text-gray-400 uppercase font-bold">Carbs</span>
-                <p className="text-sm font-bold text-gray-900 mt-0.5">{product.nutrition.carbs}</p>
-              </div>
-              <div className="p-3 bg-gray-50 rounded-xl text-center">
-                <span className="text-[10px] text-gray-400 uppercase font-bold">Fat</span>
-                <p className="text-sm font-bold text-gray-900 mt-0.5">{product.nutrition.fat}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {selectedTab === 'reviews' && (
-          <div className="space-y-4 max-w-2xl">
-            <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-1.5">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-sm text-gray-900">David M. (Verified Buyer)</span>
-                <div className="flex text-amber-400"><Star className="w-3.5 h-3.5 fill-amber-400" /><Star className="w-3.5 h-3.5 fill-amber-400" /><Star className="w-3.5 h-3.5 fill-amber-400" /><Star className="w-3.5 h-3.5 fill-amber-400" /><Star className="w-3.5 h-3.5 fill-amber-400" /></div>
-              </div>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                Super fresh and tasted ten times better than the supermarket stuff. Delivery arrived right on the 9am slot.
-              </p>
-            </div>
-
-            <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-1.5">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-sm text-gray-900">Pooja K. (Verified Buyer)</span>
-                <div className="flex text-amber-400"><Star className="w-3.5 h-3.5 fill-amber-400" /><Star className="w-3.5 h-3.5 fill-amber-400" /><Star className="w-3.5 h-3.5 fill-amber-400" /><Star className="w-3.5 h-3.5 fill-amber-400" /><Star className="w-3.5 h-3.5 fill-amber-400" /></div>
-              </div>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                Loved ordering the fresh produce together with the Suvidha cafe snacks! Such a convenient combined store.
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Related Products */}
+      {/* Related Products - Organic Horizontal Scroll */}
       {related.length > 0 && (
-        <section className="space-y-6 pt-6">
-          <h3 className="text-2xl font-black text-gray-900">Pairs Well With This Harvest</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <section className="space-y-4 pt-6 border-t border-[#E0E0E0]">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-black text-[#1B5E20]">Related Grocerz Products</h3>
+            <Link href={`/catalog?category=${product.categorySlug || 'all'}`} className="text-xs font-bold text-[#FF6F00] hover:underline">
+              Explore More
+            </Link>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-4 pt-1 no-scrollbar">
             {related.map((rel) => (
-              <ProductCard key={rel.id} product={rel} />
+              <div key={rel.id} className="min-w-[240px] max-w-[240px] shrink-0">
+                <ProductCard product={rel} />
+              </div>
             ))}
           </div>
         </section>
