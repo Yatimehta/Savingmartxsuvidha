@@ -30,7 +30,8 @@ export function OptimizedImage({
   sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
   priority = false
 }: OptimizedImageProps) {
-  const [imgSrc, setImgSrc] = useState(src || FALLBACK_IMAGE);
+  const cleanSrc = src && !src.includes('placeholder.png') ? src : FALLBACK_IMAGE;
+  const [imgSrc, setImgSrc] = useState(cleanSrc);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // If the Grocerz image fails or is a placeholder, fallback gracefully
