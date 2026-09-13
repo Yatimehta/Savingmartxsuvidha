@@ -13,7 +13,7 @@
       "rating": 4.8,
       "reviewsCount": 66,
       "inStock": true,
-      "stockCount": 16,
+      "stockCount": 15,
       "origin": "Australia (Grocerz.com.au)",
       "description": "Grocerz - Banana (450g-550g) | 1 Pack sourced directly from Grocerz Australia. Premium authentic quality.",
       "tags": [
@@ -335,7 +335,7 @@
       "rating": 4.8,
       "reviewsCount": 60,
       "inStock": true,
-      "stockCount": 21,
+      "stockCount": 20,
       "origin": "Australia (Grocerz.com.au)",
       "description": "Aashirvaad - Atta Multigrain Flour | 5kg sourced directly from Grocerz Australia. Premium authentic quality.",
       "tags": [
@@ -1176,6 +1176,51 @@
   ],
   "orders": [
     {
+      "id": "ord-1789306846471",
+      "orderNumber": "VM-84537",
+      "createdAt": "2026-09-13T13:40:46.471Z",
+      "customer": {
+        "fullName": "Sarah Jenkins",
+        "email": "sarah.j@example.com",
+        "phone": "0412 345 678",
+        "addressLine1": "48 Collins Street, Apt 12B",
+        "addressLine2": "",
+        "suburb": "Melbourne",
+        "state": "VIC",
+        "postcode": "3000",
+        "deliveryInstructions": "Leave with front reception if not answering intercom"
+      },
+      "items": [
+        {
+          "productId": "grocerz-1665",
+          "productName": "Grocerz - Banana (450g-550g) | 1 Pack",
+          "unit": "1 unit",
+          "price": 1.89,
+          "quantity": 1,
+          "image": "https://www.grocerz.com.au/placeholder.png"
+        },
+        {
+          "productId": "grocerz-4991",
+          "productName": "Aashirvaad - Atta Multigrain Flour | 5kg",
+          "unit": "1 unit",
+          "price": 13.49,
+          "quantity": 1,
+          "image": "https://www.grocerz.com.au/placeholder.png"
+        }
+      ],
+      "subtotal": 15.38,
+      "deliveryFee": 4.99,
+      "discount": 0,
+      "tax": 1.54,
+      "total": 21.91,
+      "status": "processing",
+      "paymentGateway": "stripe",
+      "paymentStatus": "paid",
+      "transactionId": "pi_test_1789306846471_qkm4x7",
+      "deliverySlot": "Morning (8:00 AM - 11:00 AM)",
+      "estimatedDeliveryDate": "Today"
+    },
+    {
       "id": "ord-1789303917035",
       "orderNumber": "VM-95256",
       "createdAt": "2026-09-13T12:51:57.035Z",
@@ -1274,6 +1319,18 @@
     }
   ],
   "transactions": [
+    {
+      "id": "txn_1789306846511_m05a",
+      "orderId": "ord-1789306846471",
+      "orderNumber": "VM-84537",
+      "amount": 21.91,
+      "currency": "AUD",
+      "gateway": "stripe",
+      "gatewayTransactionId": "pi_test_1789306846471_qkm4x7",
+      "status": "succeeded",
+      "paymentMethod": "Stripe Card (Visa •••• 4242)",
+      "createdAt": "2026-09-13T13:40:46.511Z"
+    },
     {
       "id": "txn_1789303917069_p5ru",
       "orderId": "ord-1789303917035",

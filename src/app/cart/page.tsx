@@ -15,9 +15,11 @@ import {
   Tag,
   CheckCircle2,
   XCircle,
-  Clock
+  Clock,
+  Percent
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export default function CartPage() {
   const router = useRouter();
@@ -133,11 +135,15 @@ export default function CartPage() {
                 <div key={item.product.id} className="py-3.5 first:pt-2 last:pb-0 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
                   {/* Left: Product Info (Col 6) */}
                   <div className="sm:col-span-6 flex items-center gap-3">
-                    <img
-                      src={item.product.image}
-                      alt={item.product.name}
-                      className="w-16 h-16 rounded-[4px] object-contain bg-[#FFFBF0] p-1 border border-gray-200 shrink-0"
-                    />
+                    <div className="w-16 h-16 rounded-[6px] overflow-hidden bg-[#FFFBF0] p-1 border border-gray-200 shrink-0 relative">
+                      <OptimizedImage
+                        src={item.product.image}
+                        alt={item.product.name}
+                        width={64}
+                        height={64}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
                     <div className="min-w-0">
                       <span className="text-[10px] font-bold text-[#1B5E20] block">
                         {item.product.brand || 'Grocerz'} • {item.product.category}
@@ -230,35 +236,46 @@ export default function CartPage() {
               Order Summary
             </h2>
 
-            {/* Promo Code Input */}
-            <form onSubmit={handleApplyPromo} className="space-y-1.5">
+            {/* Promo Code Section (Cart) */}
+            <form onSubmit={handleApplyPromo} className="space-y-2 bg-[#FFF9C4]/40 p-3 rounded-[6px] border border-[#FFC107]/50">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-[#1A1A1A] flex items-center gap-1.5">
+                  <Tag className="w-3.5 h-3.5 text-[#FF6F00]" /> Promo / Coupon Code
+                </span>
+                <span className="text-[10px] font-extrabold bg-[#FFC107] text-[#1A1A1A] px-2 py-0.5 rounded-full">
+                  Save 10%
+                </span>
+              </div>
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={inputCode}
                   onChange={(e) => setInputCode(e.target.value)}
-                  placeholder="Coupon (e.g. GROCERZ10)"
-                  className="flex-1 px-3 py-1.5 bg-[#FFFBF0] border border-gray-300 rounded-[4px] text-xs font-medium uppercase tracking-wider focus:outline-hidden focus:border-[#FF6F00]"
+                  placeholder="e.g. GROCERZ10"
+                  className="flex-1 px-3 py-2 bg-white border-2 border-[#FFC107] rounded-[4px] text-xs font-bold uppercase tracking-wider text-[#1A1A1A] placeholder:text-gray-400 focus:outline-hidden focus:ring-2 focus:ring-[#FFC107]"
                 />
                 <button
                   type="submit"
-                  className="bg-[#1B5E20] hover:bg-[#144618] text-white text-xs font-bold px-3.5 py-1.5 rounded-[4px] transition-colors"
+                  className="bg-[#FFC107] hover:bg-[#ffb300] text-[#1A1A1A] text-xs font-extrabold px-4 py-2 rounded-[4px] transition-all shadow-xs shrink-0"
                 >
                   Apply
                 </button>
               </div>
 
               {promoFeedback && (
-                <p className={`text-xs flex items-center gap-1 ${promoFeedback.success ? 'text-[#1B5E20] font-bold' : 'text-rose-600'}`}>
-                  {promoFeedback.success ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
+                <p className={`text-xs flex items-center gap-1 font-medium ${promoFeedback.success ? 'text-[#1B5E20] font-bold' : 'text-rose-600'}`}>
+                  {promoFeedback.success ? <CheckCircle2 className="w-3.5 h-3.5 text-[#1B5E20]" /> : <XCircle className="w-3.5 h-3.5" />}
                   {promoFeedback.message}
                 </p>
               )}
 
               {promoCode && !promoFeedback && (
-                <div className="flex items-center justify-between text-xs text-[#1B5E20] bg-[#C8E6C9]/50 px-2 py-1 rounded-[4px]">
-                  <span className="font-bold">Applied: {promoCode}</span>
-                  <button onClick={removePromoCode} className="text-rose-500 hover:underline text-xs">
+                <div className="flex items-center justify-between text-xs text-[#1B5E20] bg-[#FFF9C4] border border-[#FFC107] px-2.5 py-1.5 rounded-[4px]">
+                  <span className="font-extrabold flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#1B5E20]" />
+                    Applied: {promoCode}
+                  </span>
+                  <button onClick={removePromoCode} className="text-rose-600 font-bold hover:underline text-xs">
                     Remove
                   </button>
                 </div>
@@ -273,16 +290,19 @@ export default function CartPage() {
               </div>
 
               {discount > 0 && (
-                <div className="flex justify-between items-center text-[#1B5E20] font-bold">
-                  <span>Discount ({promoCode})</span>
-                  <span>-${discount.toFixed(2)}</span>
+                <div className="flex justify-between items-center bg-[#FFF9C4] px-2 py-1 rounded-[4px] border border-[#FFC107]/60 text-[#1B5E20] font-extrabold">
+                  <span className="flex items-center gap-1">
+                    <Percent className="w-3 h-3 text-[#1B5E20]" />
+                    Total Savings ({promoCode})
+                  </span>
+                  <span>-${discount.toFixed(2)} AUD</span>
                 </div>
               )}
 
               <div className="flex justify-between items-center">
                 <span>Delivery (Express)</span>
                 <span className="font-bold text-[#1A1A1A]">
-                  {deliveryFee === 0 ? <span className="text-[#1B5E20] font-bold">FREE (Over $50)</span> : `$${deliveryFee.toFixed(2)} AUD`}
+                  {deliveryFee === 0 ? <span className="text-[#1B5E20] font-bold bg-[#C8E6C9]/40 px-1.5 py-0.5 rounded-sm">FREE (Over $50)</span> : `$${deliveryFee.toFixed(2)} AUD`}
                 </span>
               </div>
 
@@ -291,7 +311,7 @@ export default function CartPage() {
                 <span className="font-bold text-[#1A1A1A]">${tax.toFixed(2)} AUD</span>
               </div>
 
-              <div className="border-t border-gray-200 pt-3 flex justify-between items-baseline">
+              <div className="border-t border-gray-200 pt-3 flex justify-between items-baseline bg-[#FFF9C4]/30 -mx-5 px-5 py-2 rounded-b-[4px]">
                 <span className="text-sm font-black text-[#1A1A1A]">Estimated Total</span>
                 <span className="text-2xl font-black text-[#FF6F00]">${total.toFixed(2)} AUD</span>
               </div>

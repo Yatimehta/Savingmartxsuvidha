@@ -15,10 +15,14 @@ import {
   Sparkles,
   Smartphone,
   ChevronRight,
-  Info
+  Info,
+  Check,
+  Percent,
+  Clock
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { ShippingAddress, PaymentGatewayConfig } from '@/types';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -28,7 +32,7 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { items, promoCode, deliverySlot, getSubtotal, getDeliveryFee, getTax, getTotal, clearCart } =
+  const { items, promoCode, discount, deliverySlot, getSubtotal, getDeliveryFee, getTax, getTotal, clearCart } =
     useCartStore();
 
   const [formData, setFormData] = useState<ShippingAddress>({
@@ -185,7 +189,49 @@ export default function CheckoutPage() {
   const activeGateway = gatewayConfig?.activeGateway || 'stripe';
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-[#FFFBF0] text-left">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 bg-[#FFFBF0] text-left">
+      {/* 3-Step Progress Bar: Green (done) -> Yellow (current) -> Gray (next) */}
+      <div className="bg-white rounded-[8px] border border-[#E0E0E0] p-4 shadow-2xs">
+        <div className="flex items-center justify-between max-w-2xl mx-auto">
+          {/* Step 1: Cart (Done - Green) */}
+          <Link href="/cart" className="flex items-center gap-2 group">
+            <div className="w-8 h-8 rounded-full bg-[#1B5E20] text-white flex items-center justify-center text-xs font-bold shadow-xs">
+              <Check className="w-4 h-4 stroke-[3]" />
+            </div>
+            <div className="text-left">
+              <p className="text-[10px] text-gray-400 font-bold uppercase">Step 1</p>
+              <p className="text-xs font-bold text-[#1B5E20] group-hover:underline">Shopping Cart</p>
+            </div>
+          </Link>
+
+          <div className="flex-1 h-1 bg-[#1B5E20] mx-4 rounded-full" />
+
+          {/* Step 2: Checkout & Payment (Current - Bright Yellow) */}
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-[#FFC107] text-[#1A1A1A] flex items-center justify-center text-xs font-black ring-4 ring-[#FFF9C4] shadow-xs">
+              2
+            </div>
+            <div className="text-left">
+              <p className="text-[10px] font-extrabold uppercase text-[#FF6F00]">Step 2 (Active)</p>
+              <p className="text-xs font-extrabold text-[#1A1A1A]">Details & Payment</p>
+            </div>
+          </div>
+
+          <div className="flex-1 h-1 bg-gray-200 mx-4 rounded-full" />
+
+          {/* Step 3: Confirmation (Next - Gray) */}
+          <div className="flex items-center gap-2 opacity-50">
+            <div className="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-xs font-bold">
+              3
+            </div>
+            <div className="text-left">
+              <p className="text-[10px] text-gray-400 font-bold uppercase">Step 3</p>
+              <p className="text-xs font-medium text-gray-600">Confirmation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="flex items-center justify-between border-b border-[#E0E0E0] pb-4">
         <div>
           <div className="flex items-center gap-2">
@@ -450,23 +496,35 @@ export default function CheckoutPage() {
 
         {/* Right Column: Order Review & Pay CTA */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="bg-white rounded-3xl border border-gray-200/80 p-6 shadow-xs space-y-4">
-            <h2 className="text-base font-bold text-gray-900">Review Items ({items.length})</h2>
+          <div className="bg-white rounded-[8px] border border-[#E0E0E0] p-5 shadow-2xs space-y-4">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <h2 className="text-sm font-black uppercase text-[#1A1A1A] flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#FFC107]" />
+                Review Order ({items.length} items)
+              </h2>
+              <span className="bg-[#FFF9C4] text-[#1A1A1A] text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-[#FFC107]/60">
+                Step 2 of 3
+              </span>
+            </div>
 
             {/* Quick item thumbnails */}
             <div className="max-h-48 overflow-y-auto space-y-2 pr-1 divide-y divide-gray-100">
               {items.map((i) => (
                 <div key={i.product.id} className="flex items-center gap-3 pt-2 first:pt-0">
-                  <img
-                    src={i.product.image}
-                    alt={i.product.name}
-                    className="w-10 h-10 rounded-lg object-cover bg-gray-50"
-                  />
+                  <div className="w-10 h-10 rounded-[4px] overflow-hidden bg-[#FFFBF0] p-0.5 border border-gray-200 shrink-0 relative">
+                    <OptimizedImage
+                      src={i.product.image}
+                      alt={i.product.name}
+                      width={40}
+                      height={40}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold text-gray-900 truncate">{i.product.name}</p>
                     <p className="text-[10px] text-gray-500">Qty: {i.quantity} × ${i.product.price.toFixed(2)}</p>
                   </div>
-                  <span className="text-xs font-bold text-gray-900">
+                  <span className="text-xs font-black text-[#1A1A1A]">
                     ${(i.product.price * i.quantity).toFixed(2)}
                   </span>
                 </div>
@@ -474,31 +532,54 @@ export default function CheckoutPage() {
             </div>
 
             {/* Delivery Slot Selected */}
-            <div className="p-3 bg-gray-50 rounded-xl text-xs space-y-1">
-              <span className="text-[10px] text-gray-400 uppercase font-bold">Delivery Slot</span>
-              <p className="font-bold text-gray-800">{deliverySlot}</p>
+            <div className="p-3 bg-[#FFFBF0] rounded-[6px] border border-[#FFC107]/40 text-xs space-y-1">
+              <span className="text-[10px] text-[#1B5E20] uppercase font-extrabold flex items-center gap-1">
+                <Clock className="w-3 h-3 text-[#FF6F00]" /> Australian Delivery Slot
+              </span>
+              <p className="font-black text-[#1A1A1A]">{deliverySlot}</p>
             </div>
+
+            {/* Promo Code Applied Badge */}
+            {promoCode && (
+              <div className="p-2.5 bg-[#FFF9C4] rounded-[6px] border border-[#FFC107] text-xs flex items-center justify-between text-[#1B5E20] font-extrabold">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#1B5E20]" />
+                  Promo Applied: {promoCode}
+                </span>
+                <span className="text-[#FF6F00] font-black">ACTIVE</span>
+              </div>
+            )}
 
             {/* Financial Summary */}
             <div className="space-y-2 text-xs text-gray-600 border-t border-gray-100 pt-3">
               <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span className="font-semibold text-gray-900">${subtotal.toFixed(2)}</span>
+                <span>Items Subtotal</span>
+                <span className="font-semibold text-gray-900">${subtotal.toFixed(2)} AUD</span>
               </div>
+
+              {discount > 0 && (
+                <div className="flex justify-between items-center bg-[#FFF9C4] px-2 py-1 rounded-[4px] border border-[#FFC107] text-[#1B5E20] font-black">
+                  <span className="flex items-center gap-1">
+                    <Percent className="w-3 h-3" /> Total Savings
+                  </span>
+                  <span>-${discount.toFixed(2)} AUD</span>
+                </div>
+              )}
+
               <div className="flex justify-between">
-                <span>Delivery</span>
+                <span>Delivery (Express)</span>
                 <span className="font-semibold text-gray-900">
-                  {deliveryFee === 0 ? 'FREE' : `$${deliveryFee.toFixed(2)}`}
+                  {deliveryFee === 0 ? <span className="text-[#1B5E20] font-bold">FREE (Over $50)</span> : `$${deliveryFee.toFixed(2)} AUD`}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span>GST (10%)</span>
-                <span className="font-semibold text-gray-900">${tax.toFixed(2)}</span>
+                <span>GST (10% included)</span>
+                <span className="font-semibold text-gray-900">${tax.toFixed(2)} AUD</span>
               </div>
 
-              <div className="border-t border-gray-200 pt-3 flex justify-between items-baseline">
-                <span className="text-sm font-bold text-gray-900">Total Payable</span>
-                <span className="text-2xl font-black text-vegimart-green">${total.toFixed(2)}</span>
+              <div className="border-t border-gray-200 pt-3 flex justify-between items-baseline bg-[#FFF9C4]/40 -mx-5 px-5 py-2 rounded-b-[4px]">
+                <span className="text-sm font-black text-gray-900">Total Payable</span>
+                <span className="text-2xl font-black text-[#FF6F00]">${total.toFixed(2)} AUD</span>
               </div>
             </div>
 
@@ -513,7 +594,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-vegimart-orange hover:bg-orange-600 text-white font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all disabled:opacity-70 text-sm"
+              className="w-full bg-[#FF6F00] hover:bg-[#E65100] text-white font-black py-3.5 rounded-[6px] flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all disabled:opacity-70 text-sm border-2 border-[#FFC107]"
             >
               {isSubmitting ? (
                 <>
@@ -522,14 +603,14 @@ export default function CheckoutPage() {
                 </>
               ) : (
                 <>
-                  Pay ${total.toFixed(2)} Securely <ArrowRight className="w-4 h-4" />
+                  Pay ${total.toFixed(2)} AUD Securely <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
 
             <p className="text-[11px] text-gray-400 text-center flex items-center justify-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              Transactions securely logged in VegiMart dual-gateway audit.
+              <ShieldCheck className="w-3.5 h-3.5 text-[#1B5E20]" />
+              Dual-gateway verified: Stripe & Razorpay audit active.
             </p>
           </div>
         </div>

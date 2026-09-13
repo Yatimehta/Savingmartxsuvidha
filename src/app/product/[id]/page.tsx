@@ -15,11 +15,13 @@ import {
   Sparkles,
   MapPin,
   Clock,
-  Share2
+  Share2,
+  CheckCircle2
 } from 'lucide-react';
 import { Product } from '@/types';
 import { useCartStore } from '@/store/useCartStore';
 import { ProductCard } from '@/components/products/ProductCard';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -63,7 +65,7 @@ export default function ProductDetailPage() {
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <div className="w-12 h-12 border-4 border-vegimart-green border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <div className="w-12 h-12 border-4 border-[#FFC107] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
         <p className="text-gray-500 text-sm">Loading harvest produce details...</p>
       </div>
     );
@@ -76,7 +78,7 @@ export default function ProductDetailPage() {
         <p className="text-sm text-gray-500">The grocery item you are looking for may be sold out or unavailable.</p>
         <Link
           href="/catalog"
-          className="inline-flex items-center gap-2 bg-vegimart-green text-white px-5 py-2.5 rounded-xl font-semibold text-sm"
+          className="inline-flex items-center gap-2 bg-[#1B5E20] text-white px-5 py-2.5 rounded-xl font-semibold text-sm"
         >
           <ArrowLeft className="w-4 h-4" /> Return to Catalog
         </Link>
@@ -89,6 +91,13 @@ export default function ProductDetailPage() {
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
+
+  const discountAmount = product.originalPrice && product.originalPrice > product.price 
+    ? product.originalPrice - product.price 
+    : 0;
+  const discountPercent = product.originalPrice && product.originalPrice > product.price
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10 bg-[#FFFBF0] text-left">
@@ -110,22 +119,23 @@ export default function ProductDetailPage() {
         {/* Left Gallery (60% width) */}
         <div className="lg:col-span-7 space-y-4">
           <div className="relative aspect-4/3 rounded-[8px] overflow-hidden bg-white border border-[#E0E0E0] p-4 flex items-center justify-center">
-            <img
+            <OptimizedImage
               src={product.image}
               alt={product.name}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80';
-              }}
+              width={600}
+              height={450}
+              priority={true}
               className="max-h-full max-w-full object-contain"
             />
-            {product.originalPrice && product.originalPrice > product.price && (
-              <span className="absolute top-3 left-3 bg-[#FF6F00] text-white text-xs font-bold px-2.5 py-1 rounded-[4px] shadow-2xs">
-                Save ${(product.originalPrice - product.price).toFixed(2)} AUD
+            {discountPercent > 0 && (
+              <span className="absolute top-3 left-3 bg-[#FFC107] text-[#1A1A1A] text-xs font-black px-2.5 py-1 rounded-[4px] shadow-sm flex items-center gap-1">
+                <Sparkles className="w-3.5 h-3.5 fill-[#1A1A1A]" />
+                SAVE {discountPercent}% (${discountAmount.toFixed(2)} AUD)
               </span>
             )}
             <button
               onClick={() => toggleWishlist(product.id)}
-              className={`absolute top-3 right-3 p-2 rounded-[6px] bg-white border border-gray-200 transition-all ${
+              className={`absolute top-3 right-3 p-2 rounded-[6px] bg-white/90 backdrop-blur-xs border border-gray-200 transition-all ${
                 isInWishlist ? 'text-rose-500' : 'text-gray-400 hover:text-rose-500'
               }`}
               title="Add to wishlist"
@@ -145,9 +155,10 @@ export default function ProductDetailPage() {
             </div>
             <div className="p-2.5 bg-white rounded-[6px] border border-[#E0E0E0] text-center">
               <span className="text-[10px] text-gray-500 uppercase font-bold">Availability</span>
-              <p className="text-xs font-bold text-[#1B5E20] truncate mt-0.5">
+              <div className="flex items-center justify-center gap-1 text-xs font-black text-[#1A1A1A] truncate mt-0.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#FFC107] inline-block shrink-0" />
                 {product.inStock ? `${product.stockCount || 25} in stock` : 'Out of Stock'}
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -168,7 +179,7 @@ export default function ProductDetailPage() {
 
             {/* Rating & Reviews */}
             <div className="flex items-center gap-2 pt-1 text-xs">
-              <div className="flex items-center gap-1 bg-[#FFF9C4] px-2 py-0.5 rounded-[4px] border border-[#FFC107]/50 font-bold text-gray-800">
+              <div className="flex items-center gap-1 bg-[#FFF9C4] px-2.5 py-0.5 rounded-[4px] border border-[#FFC107] font-extrabold text-[#1A1A1A]">
                 <Star className="w-3.5 h-3.5 fill-[#FFC107] text-[#FFC107]" />
                 <span>{product.rating}</span>
               </div>
@@ -177,30 +188,36 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Pricing Box */}
-          <div className="p-3.5 rounded-[6px] bg-white border border-[#E0E0E0] flex items-baseline justify-between">
+          <div className="p-3.5 rounded-[6px] bg-white border border-[#E0E0E0] flex items-baseline justify-between shadow-2xs">
             <div>
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-black text-[#FF6F00]">
                   ${product.price.toFixed(2)}
                 </span>
                 {product.originalPrice && product.originalPrice > product.price && (
-                  <span className="text-sm text-gray-400 line-through font-normal">
+                  <span className="text-sm bg-[#FFF9C4] px-1.5 py-0.5 rounded text-gray-700 font-semibold line-through border border-[#FFC107]/40">
                     ${product.originalPrice.toFixed(2)}
+                  </span>
+                )}
+                {discountPercent > 0 && (
+                  <span className="text-[10px] font-extrabold bg-[#FFC107] text-[#1A1A1A] px-2 py-0.5 rounded-full shadow-2xs">
+                    -{discountPercent}%
                   </span>
                 )}
               </div>
               <p className="text-xs text-gray-600 mt-0.5 font-medium">Unit: {product.unit} (AUD)</p>
             </div>
 
-            <span className="px-2 py-0.5 rounded-[4px] text-xs font-bold bg-[#C8E6C9] text-[#1B5E20]">
-              ✓ Available for Delivery
+            <span className="px-2 py-1 rounded-[4px] text-xs font-extrabold bg-[#FFF9C4] text-[#1A1A1A] border border-[#FFC107] flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-[#FFC107]" />
+              In Stock & Ready
             </span>
           </div>
 
           {/* Quantity and Add to Cart */}
           <div className="space-y-2.5 pt-1">
             <div className="flex items-center gap-3">
-              <div className="flex items-center border border-[#E0E0E0] rounded-[6px] bg-white p-1">
+              <div className="flex items-center border-2 border-gray-200 focus-within:border-[#FFC107] focus-within:ring-2 focus-within:ring-[#FFC107]/40 rounded-[6px] bg-white p-1 transition-all">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   className="w-8 h-8 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-[4px]"
@@ -208,7 +225,7 @@ export default function ProductDetailPage() {
                 >
                   <Minus className="w-3.5 h-3.5" />
                 </button>
-                <span className="w-10 text-center font-bold text-sm text-[#1A1A1A]">
+                <span className="w-10 text-center font-black text-sm text-[#1A1A1A]">
                   {quantity}
                 </span>
                 <button
@@ -223,10 +240,10 @@ export default function ProductDetailPage() {
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className={`flex-1 h-[45px] px-5 rounded-[6px] font-bold text-sm flex items-center justify-center gap-2 transition-all text-white ${
+                className={`flex-1 h-[45px] px-5 rounded-[6px] font-extrabold text-sm flex items-center justify-center gap-2 transition-all text-white border-2 border-[#FFC107] shadow-[0_0_12px_rgba(255,193,7,0.3)] ${
                   added
-                    ? 'bg-[#1B5E20]'
-                    : 'bg-[#FF6F00] hover:bg-[#E65100] hover:-translate-y-0.5 shadow-2xs'
+                    ? 'bg-[#1B5E20] border-[#1B5E20]'
+                    : 'bg-[#FF6F00] hover:bg-[#E65100] hover:shadow-[0_0_18px_rgba(255,193,7,0.45)] hover:-translate-y-0.5'
                 }`}
               >
                 {added ? (

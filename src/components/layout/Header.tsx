@@ -66,7 +66,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#1B5E20] text-white border-b border-[#144618] shadow-md">
+    <header className="sticky top-0 z-40 bg-[#1B5E20] text-white border-b-4 border-[#FFC107] shadow-md">
       {/* Main Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-4">
@@ -75,7 +75,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-white hover:text-emerald-200"
+              className="md:hidden p-2 text-white hover:text-[#FFC107]"
               aria-label="Toggle Navigation Menu"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -83,7 +83,7 @@ export function Header() {
 
             <Link href="/" className="flex items-center gap-3 group">
               {/* Official VegiMart Logo */}
-              <div className="bg-white/95 px-2.5 py-1.5 rounded-md shadow-xs">
+              <div className="bg-white/95 px-2.5 py-1.5 rounded-[6px] shadow-xs border-b-2 border-[#FFC107]">
                 <img
                   src="/images/vegimart-logo.png"
                   alt="VegiMart"
@@ -93,8 +93,8 @@ export function Header() {
 
               {/* Co-Branding Separator & Suvidha Logo */}
               <div className="hidden sm:flex items-center gap-2 pl-2 border-l border-green-700/60">
-                <span className="text-emerald-200 font-light text-sm">×</span>
-                <div className="bg-white/95 px-2 py-1 rounded-md shadow-xs">
+                <span className="text-[#FFC107] font-bold text-sm">×</span>
+                <div className="bg-white/95 px-2 py-1 rounded-[6px] shadow-xs border-b-2 border-[#FFC107]">
                   <img
                     src="/images/suvidha-logo.png"
                     alt="Suvidha Grocery & Cafe"
@@ -105,7 +105,7 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Search Bar - Desktop (Off-white, 6px rounded) */}
+          {/* Search Bar - Desktop (Off-white, 6px rounded, Yellow focus ring) */}
           <div className="hidden md:flex flex-1 max-w-xl relative" ref={searchRef}>
             <form onSubmit={handleSearchSubmit} className="w-full relative">
               <input
@@ -117,12 +117,12 @@ export function Header() {
                 }}
                 onFocus={() => setIsSearchOpen(true)}
                 placeholder="Search Grocerz products: bananas, atta flour, basmati, samosa, ghee..."
-                className="w-full pl-10 pr-24 py-2 bg-[#FFFBF0] text-[#1A1A1A] placeholder-gray-500 border border-gray-300 focus:border-[#FF6F00] rounded-[6px] text-sm focus:outline-hidden transition-all shadow-inner"
+                className="w-full pl-10 pr-24 py-2 bg-[#FFFBF0] text-[#1A1A1A] placeholder-gray-500 border-2 border-transparent focus:border-[#FFC107] rounded-[6px] text-sm focus:outline-hidden transition-all shadow-inner"
               />
               <Search className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <button
                 type="submit"
-                className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#FF6F00] hover:bg-[#E65100] text-white text-xs font-semibold px-4 py-1.5 rounded-[4px] transition-colors shadow-xs"
+                className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#FF6F00] hover:bg-[#E65100] text-white text-xs font-bold px-4 py-1.5 rounded-[4px] transition-colors shadow-xs"
               >
                 Search
               </button>
@@ -130,8 +130,8 @@ export function Header() {
 
             {/* Autocomplete Dropdown */}
             {isSearchOpen && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white text-[#1A1A1A] rounded-[8px] shadow-xl border border-gray-200 py-2 z-50">
-                <div className="px-4 py-1 text-[11px] font-bold uppercase tracking-wider text-gray-500">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white text-[#1A1A1A] rounded-[8px] shadow-xl border-2 border-[#FFC107] py-2 z-50">
+                <div className="px-4 py-1 text-[11px] font-bold uppercase tracking-wider text-[#1B5E20] bg-[#FFF9C4]">
                   Verified Grocerz Searches
                 </div>
                 <div className="divide-y divide-gray-100">
@@ -146,13 +146,13 @@ export function Header() {
                         key={idx}
                         type="button"
                         onClick={() => handleSelectSuggestion(item.title)}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-[#C8E6C9] hover:text-[#1B5E20] flex items-center justify-between transition-colors"
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-[#FFF9C4] hover:text-[#1B5E20] flex items-center justify-between transition-colors"
                       >
                         <span className="flex items-center gap-2">
                           <Search className="w-3.5 h-3.5 text-gray-400" />
                           {item.title}
                         </span>
-                        <span className="text-xs text-gray-500 capitalize bg-gray-100 px-2 py-0.5 rounded-[4px]">
+                        <span className="text-xs text-gray-800 font-semibold capitalize bg-[#FFC107]/40 px-2 py-0.5 rounded-[4px]">
                           {item.cat.replace('-', ' ')}
                         </span>
                       </button>
@@ -163,39 +163,48 @@ export function Header() {
           </div>
 
           {/* Right Action Icons */}
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3.5">
             {/* Delivery Location badge */}
             <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-[#144618] rounded-[6px] border border-green-800 text-xs text-emerald-100">
               <MapPin className="w-4 h-4 text-[#FFC107] shrink-0" />
               <div>
-                <p className="text-[10px] text-emerald-300 font-medium leading-none">Deliver to</p>
+                <p className="text-[10px] text-[#FFC107] font-bold leading-none">Deliver to</p>
                 <p className="font-semibold leading-tight">Melbourne VIC</p>
               </div>
             </div>
 
+            {/* Hot Deals Yellow Pill Badge */}
+            <Link
+              href="/catalog"
+              className="hidden sm:inline-flex items-center gap-1 bg-[#FFC107] text-[#1A1A1A] font-extrabold text-[11px] px-2.5 py-1 rounded-full shadow-2xs hover:bg-yellow-300 transition-colors uppercase tracking-wider animate-pulse"
+            >
+              <Sparkles className="w-3 h-3 text-[#1B5E20]" />
+              Hot Deals
+            </Link>
+
             {/* Wishlist */}
             <Link
               href="/catalog?wishlist=true"
-              className="relative p-2 text-emerald-100 hover:text-white hover:bg-green-800/60 rounded-[6px] transition-colors"
+              className="relative p-2 text-emerald-100 hover:text-[#FFC107] hover:bg-green-800/60 rounded-[6px] transition-colors"
               title="Wishlist"
             >
               <Heart className="w-5 h-5" />
               {mounted && wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#FF6F00] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-[#FFC107] text-[#1A1A1A] text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
                   {wishlistCount}
                 </span>
               )}
             </Link>
 
-            {/* Shopping Cart Button */}
+            {/* Shopping Cart Button with Solid Yellow Badge (#FFC107) and Dark Text */}
             <Link
               href="/cart"
-              className="flex items-center gap-2 bg-[#FF6F00] hover:bg-[#E65100] text-white px-3.5 py-2 rounded-[6px] font-semibold text-sm transition-all shadow-xs hover:-translate-y-0.5"
+              className="flex items-center gap-2 bg-[#FF6F00] hover:bg-[#E65100] text-white px-3.5 py-2 rounded-[6px] font-bold text-sm transition-all shadow-xs hover:-translate-y-0.5 border border-amber-300/30"
             >
               <div className="relative">
                 <ShoppingCart className="w-5 h-5" />
                 {mounted && itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-white text-[#FF6F00] text-[11px] font-bold px-1.5 rounded-full shadow-xs">
+                  <span className="absolute -top-2.5 -right-2.5 bg-[#FFC107] text-[#1A1A1A] text-[11px] font-black px-1.5 py-0.2 rounded-full shadow-sm ring-1 ring-white">
                     {itemCount}
                   </span>
                 )}
@@ -227,9 +236,9 @@ export function Header() {
                 <button
                   type="button"
                   onClick={() => setIsAuthModalOpen(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] border border-green-700 hover:border-white text-white text-xs font-medium transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] border border-[#FFC107] hover:bg-[#FFC107] hover:text-[#1A1A1A] text-[#FFC107] text-xs font-bold transition-colors"
                 >
-                  <UserIcon className="w-3.5 h-3.5 text-[#FFC107]" />
+                  <UserIcon className="w-3.5 h-3.5" />
                   <span>Sign In</span>
                 </button>
               )
@@ -238,7 +247,7 @@ export function Header() {
             {/* Admin Switcher shortcut */}
             <Link
               href="/admin"
-              className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-100 hover:text-white font-medium px-2.5 py-1.5 rounded-[6px] bg-green-900/60 border border-green-800 hover:border-emerald-400 transition-colors"
+              className="hidden sm:flex items-center gap-1.5 text-xs text-[#FFC107] hover:text-white font-bold px-2.5 py-1.5 rounded-[6px] bg-green-900/60 border border-[#FFC107]/60 hover:border-[#FFC107] transition-colors"
             >
               <SlidersHorizontal className="w-3.5 h-3.5 text-[#FFC107]" />
               Admin
@@ -247,11 +256,11 @@ export function Header() {
         </div>
 
         {/* Category Navigation Bar */}
-        <nav className="hidden md:flex items-center justify-between py-2 border-t border-green-800 text-xs font-medium tracking-wide">
+        <nav className="hidden md:flex items-center justify-between py-2 border-t border-green-800/80 text-xs font-medium tracking-wide">
           <div className="flex items-center gap-5 overflow-x-auto no-scrollbar">
             <Link
               href="/catalog"
-              className="text-[#FFC107] hover:text-yellow-300 font-bold flex items-center gap-1"
+              className="bg-[#FFC107] text-[#1A1A1A] font-extrabold px-2.5 py-0.5 rounded-[4px] flex items-center gap-1 shadow-2xs hover:bg-yellow-300 transition-colors"
             >
               All 51 Grocerz Items
             </Link>
@@ -305,9 +314,9 @@ export function Header() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-emerald-200">
-            <span className="w-2 h-2 rounded-full bg-[#FFC107]"></span>
-            <span>100% Grocerz Australia Stock</span>
+          <div className="flex items-center gap-2 text-xs font-bold text-[#FFC107]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FFC107] animate-pulse"></span>
+            <span>100% Grocerz Australia Catalog</span>
           </div>
         </nav>
       </div>

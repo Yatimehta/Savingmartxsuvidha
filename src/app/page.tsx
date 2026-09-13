@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { ProductCard } from '@/components/products/ProductCard';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export default function HomePage() {
   const allProducts = db.getProducts();
@@ -93,111 +94,137 @@ export default function HomePage() {
 
   return (
     <div className="space-y-12 pb-16 bg-[#FFFBF0]">
-      {/* AUTHENTIC ASYMMETRICAL HERO SECTION */}
-      <section className="relative overflow-hidden bg-[#FFFBF0] border-b border-[#E0E0E0] pt-8 pb-12 md:pt-12 md:pb-16">
-        {/* Subtle diagonal background shape */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#C8E6C9]/30 rounded-bl-[80px] -z-0 pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-48 h-24 bg-[#FFCC99]/20 rounded-tr-[40px] -z-0 pointer-events-none" />
+      {/* AUTHENTIC ASYMMETRICAL HERO SECTION WITH PROMINENT YELLOW ACCENTS */}
+      <section className="relative overflow-hidden bg-[#FFFBF0] border-b-2 border-[#FFC107] pt-8 pb-12 md:pt-12 md:pb-16">
+        {/* Prominent Diagonal Yellow Accent Stripe (60px wide) */}
+        <div className="absolute -top-10 left-1/4 w-16 h-[500px] bg-[#FFC107]/25 rotate-12 -z-0 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFF9C4]/60 rounded-bl-[100px] -z-0 pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-64 h-32 bg-[#C8E6C9]/30 rounded-tr-[50px] -z-0 pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-left">
             {/* Hero Left Content (70% asymmetric emphasis) */}
             <div className="lg:col-span-8 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[4px] bg-[#C8E6C9] text-[#1B5E20] text-xs font-bold border border-[#1B5E20]/20">
-                <Leaf className="w-3.5 h-3.5 text-[#1B5E20]" />
-                <span>100% SOURCED EXCLUSIVELY FROM GROCERZ.COM.AU</span>
+              {/* Yellow Pill Badge Header */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFC107] text-[#1A1A1A] text-xs font-black shadow-2xs border border-amber-300">
+                <Sparkles className="w-4 h-4 text-[#1B5E20]" />
+                <span>EXCLUSIVE GROCERZ.COM.AU PRODUCTS & LIVE PRICES</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black tracking-tight text-[#1B5E20] leading-[1.15]">
-                Fresh Produce & Authentic Indian Pantry, <br />
-                <span className="text-[#FF6F00]">Delivered Across Australia.</span>
-              </h1>
+              <div className="space-y-1">
+                <p className="text-sm sm:text-base font-extrabold uppercase tracking-widest text-[#FF6F00] flex items-center gap-2">
+                  <span className="w-8 h-1 bg-[#FFC107] rounded-full inline-block"></span>
+                  Fresh from Grocerz Australia
+                </p>
+                <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black tracking-tight text-[#1B5E20] leading-[1.15]">
+                  Crisp Farm Produce & <br />
+                  <span className="text-[#FF6F00] relative inline-block">
+                    Authentic Indian Staples
+                    <span className="absolute bottom-1 left-0 right-0 h-2 bg-[#FFC107]/40 -z-10 rounded"></span>
+                  </span>
+                </h1>
+              </div>
 
               <p className="text-base sm:text-lg text-[#1A1A1A] max-w-2xl font-normal leading-relaxed">
-                Enjoy real Australian farm produce, Aashirvaad chakki atta, Fortune basmati rice, Haldiram namkeens, and daily essentials with transparent AUD pricing and live dual payment checkout (Stripe + Razorpay).
+                Source 100% genuine Australian farm produce, Aashirvaad chakki atta, Fortune basmati rice, Haldiram savouries, and chilled dairy with transparent AUD prices and seamless Stripe + Razorpay checkout.
               </p>
+
+              {/* 3 Prominent Multi-Color Benefit Badges (Yellow Most Prominent) */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                {/* 1. Green Badge */}
+                <div className="p-3 bg-emerald-50 rounded-[6px] border border-emerald-300 text-left flex items-center gap-2.5">
+                  <Leaf className="w-5 h-5 text-[#1B5E20] shrink-0" />
+                  <div>
+                    <span className="text-[10px] font-bold text-[#1B5E20] uppercase block">Fresh Produce</span>
+                    <p className="text-xs font-bold text-gray-800">100% Farm Sourced</p>
+                  </div>
+                </div>
+
+                {/* 2. Orange Badge */}
+                <div className="p-3 bg-orange-50 rounded-[6px] border border-orange-300 text-left flex items-center gap-2.5">
+                  <Clock className="w-5 h-5 text-[#FF6F00] shrink-0" />
+                  <div>
+                    <span className="text-[10px] font-bold text-[#FF6F00] uppercase block">Express Delivery</span>
+                    <p className="text-xs font-bold text-gray-800">Fast 2-Hour Slots</p>
+                  </div>
+                </div>
+
+                {/* 3. Bright Yellow Badge (Largest & Most Prominent) */}
+                <div className="p-3 bg-[#FFC107] rounded-[6px] border-2 border-amber-400 text-left flex items-center gap-2.5 shadow-sm">
+                  <Sparkles className="w-5 h-5 text-[#1B5E20] shrink-0" />
+                  <div>
+                    <span className="text-[10px] font-black text-[#1B5E20] uppercase block">Guaranteed Value</span>
+                    <p className="text-xs font-black text-[#1A1A1A]">Official Grocerz Pricing</p>
+                  </div>
+                </div>
+              </div>
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                 <Link
                   href="/catalog"
-                  className="bg-[#FF6F00] hover:bg-[#E65100] text-white font-bold px-7 py-3 rounded-[8px] flex items-center justify-center gap-2 shadow-sm transition-all hover:-translate-y-0.5 text-sm sm:text-base"
+                  className="bg-[#FF6F00] hover:bg-[#E65100] text-white font-bold px-7 py-3 rounded-[8px] flex items-center justify-center gap-2 shadow-sm transition-all hover:-translate-y-0.5 text-sm sm:text-base border-2 border-transparent hover:border-[#FFC107]"
                 >
-                  Shop 51 Grocerz Products <ArrowRight className="w-4 h-4" />
+                  Shop All 51 Products <ArrowRight className="w-4 h-4 text-[#FFC107]" />
                 </Link>
 
                 <Link
                   href="/catalog?category=indian-pantry"
-                  className="bg-white hover:bg-[#FFF9C4] text-[#1B5E20] font-bold px-6 py-3 rounded-[8px] flex items-center justify-center gap-2 border border-[#1B5E20] transition-colors text-sm sm:text-base"
+                  className="bg-[#FFF9C4] hover:bg-[#FFC107] text-[#1B5E20] font-black px-6 py-3 rounded-[8px] flex items-center justify-center gap-2 border-2 border-[#FFC107] transition-colors text-sm sm:text-base"
                 >
                   <Coffee className="w-4 h-4 text-[#FF6F00]" />
                   Explore Indian Pantry
                 </Link>
               </div>
-
-              {/* Quick Perks */}
-              <div className="grid grid-cols-3 gap-3 pt-4 border-t border-gray-200 text-xs text-[#1A1A1A] font-medium">
-                <div className="flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-[#FF6F00] shrink-0" />
-                  <span>Fast 2-Hour Slots</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Leaf className="w-4 h-4 text-[#1B5E20] shrink-0" />
-                  <span>Genuine Grocerz Stock</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CreditCard className="w-4 h-4 text-[#FF6F00] shrink-0" />
-                  <span>Stripe & Razorpay Active</span>
-                </div>
-              </div>
             </div>
 
             {/* Hero Right Visual Card (30% asymmetric accent) */}
             <div className="lg:col-span-4 relative">
-              <div className="bg-white p-5 rounded-[8px] border border-[#E0E0E0] shadow-sm space-y-4 text-left">
-                <div className="flex items-center justify-between border-b border-gray-100 pb-2.5">
-                  <span className="text-xs font-bold text-[#1B5E20] uppercase tracking-wide">
-                    Featured Grocerz Pick
+              <div className="bg-white p-5 rounded-[8px] border-2 border-[#FFC107] shadow-md space-y-3.5 text-left">
+                <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                  <span className="text-xs font-black text-[#1B5E20] uppercase tracking-wide flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#FFC107]"></span>
+                    Grocerz Best Sellers
                   </span>
-                  <span className="text-[10px] text-white bg-[#FF6F00] font-bold px-2 py-0.5 rounded-[4px]">
-                    In Stock
+                  <span className="text-[10px] text-[#1A1A1A] bg-[#FFC107] font-black px-2 py-0.5 rounded-[4px]">
+                    IN STOCK
                   </span>
                 </div>
 
-                <div className="p-3 bg-[#FFFBF0] rounded-[6px] border border-[#E0E0E0] flex items-center gap-3">
-                  <img
+                <div className="p-2.5 bg-[#FFF9C4]/50 rounded-[6px] border border-[#FFC107]/40 flex items-center gap-3">
+                  <OptimizedImage
                     src="https://www.grocerz.com.au/storage/uploads/products/medium/904_1701386762_2615.jpg"
                     alt="Aashirvaad Atta"
-                    className="w-16 h-16 object-contain rounded-[4px] bg-white p-1 border border-gray-200 shrink-0"
+                    className="w-14 h-14 rounded-[4px] bg-white p-1 border border-gray-200 shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-bold text-[#1B5E20]">Aashirvaad Atta</p>
+                    <p className="text-[11px] font-black text-[#1B5E20]">Aashirvaad Atta</p>
                     <p className="text-[#1A1A1A] font-bold text-xs truncate">Sudh Chakki Atta Export 10kg</p>
                     <p className="text-xs text-[#FF6F00] font-black mt-0.5">$17.99 AUD</p>
                   </div>
                 </div>
 
-                <div className="p-3 bg-[#FFFBF0] rounded-[6px] border border-[#E0E0E0] flex items-center gap-3">
-                  <img
+                <div className="p-2.5 bg-[#FFF9C4]/50 rounded-[6px] border border-[#FFC107]/40 flex items-center gap-3">
+                  <OptimizedImage
                     src="https://www.grocerz.com.au/storage/uploads/products/medium/1665_1731633519_2302.jpg"
                     alt="Fresh Bananas"
-                    className="w-16 h-16 object-contain rounded-[4px] bg-white p-1 border border-gray-200 shrink-0"
+                    className="w-14 h-14 rounded-[4px] bg-white p-1 border border-gray-200 shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-bold text-[#1B5E20]">Fresh Produce</p>
+                    <p className="text-[11px] font-black text-[#1B5E20]">Fresh Produce</p>
                     <p className="text-[#1A1A1A] font-bold text-xs truncate">Grocerz Bananas (450g-550g)</p>
                     <p className="text-xs text-[#FF6F00] font-black mt-0.5">$1.89 AUD</p>
                   </div>
                 </div>
 
-                <div className="p-3 bg-[#C8E6C9]/50 rounded-[6px] border border-[#C8E6C9] flex items-center justify-between text-xs">
+                <div className="p-3 bg-[#FFC107] rounded-[6px] border border-amber-400 flex items-center justify-between text-xs shadow-2xs">
                   <div>
-                    <span className="font-bold text-[#1B5E20] block">Special Promo: GROCERZ10</span>
-                    <span className="text-[11px] text-gray-600">Free delivery on orders $50+</span>
+                    <span className="font-black text-[#1A1A1A] block">Code: GROCERZ10 ($10 OFF)</span>
+                    <span className="text-[11px] text-gray-800 font-medium">Free express delivery on $50+</span>
                   </div>
                   <Link
                     href="/catalog"
-                    className="bg-[#FF6F00] hover:bg-[#E65100] text-white font-bold px-2.5 py-1 rounded-[4px] text-xs"
+                    className="bg-[#1B5E20] hover:bg-[#144618] text-white font-extrabold px-3 py-1.5 rounded-[4px] text-xs shadow-2xs"
                   >
                     Claim
                   </Link>

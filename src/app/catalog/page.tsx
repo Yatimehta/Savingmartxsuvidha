@@ -186,22 +186,32 @@ function CatalogContent() {
 
           {/* Category List */}
           <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-gray-400 block">
-              Categories
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold uppercase tracking-wider text-gray-500 block">
+                Categories
+              </label>
+              {selectedCategory !== 'all' && (
+                <span className="bg-[#FFC107] text-[#1A1A1A] text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-xs">
+                  1 Active
+                </span>
+              )}
+            </div>
             <div className="space-y-1">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors ${
+                  className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all duration-150 ${
                     selectedCategory === cat.id
-                      ? 'bg-green-50 text-vegimart-green font-bold'
-                      : 'text-gray-600 hover:bg-gray-50'
+                      ? 'bg-[#FFC107] text-[#1A1A1A] font-extrabold shadow-xs scale-[1.01]'
+                      : 'text-gray-700 hover:bg-yellow-50/60 hover:text-gray-900'
                   }`}
                 >
-                  <span>{cat.label}</span>
-                  {selectedCategory === cat.id && <Check className="w-3.5 h-3.5 text-vegimart-green" />}
+                  <span className="flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${selectedCategory === cat.id ? 'bg-[#1A1A1A]' : 'bg-[#FFC107]/50'}`} />
+                    {cat.label}
+                  </span>
+                  {selectedCategory === cat.id && <Check className="w-4 h-4 text-[#1A1A1A] stroke-[3]" />}
                 </button>
               ))}
             </div>
@@ -210,10 +220,12 @@ function CatalogContent() {
           {/* Price Range */}
           <div className="space-y-2 pt-4 border-t border-gray-100">
             <div className="flex justify-between items-center">
-              <label className="text-xs font-bold uppercase tracking-wider text-gray-400">
+              <label className="text-xs font-bold uppercase tracking-wider text-gray-500">
                 Max Price
               </label>
-              <span className="text-xs font-bold text-gray-900">${priceRange.toFixed(2)}</span>
+              <span className="text-xs font-extrabold px-2 py-0.5 rounded-md bg-[#FFF9C4] text-[#1A1A1A] border border-[#FFC107]/40">
+                ${priceRange.toFixed(2)}
+              </span>
             </div>
             <input
               type="range"
@@ -222,9 +234,9 @@ function CatalogContent() {
               step="1"
               value={priceRange}
               onChange={(e) => setPriceRange(Number(e.target.value))}
-              className="w-full accent-vegimart-green cursor-pointer"
+              className="w-full accent-[#FFC107] cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-gray-400">
+            <div className="flex justify-between text-[10px] text-gray-500">
               <span>$2</span>
               <span>$25+</span>
             </div>
@@ -323,8 +335,8 @@ function CatalogContent() {
                       setSelectedCategory(cat.id);
                       setMobileFilterOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold ${
-                      selectedCategory === cat.id ? 'bg-green-50 text-vegimart-green font-bold' : 'text-gray-700'
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                      selectedCategory === cat.id ? 'bg-[#FFC107] text-[#1A1A1A] font-extrabold shadow-xs' : 'text-gray-700 hover:bg-yellow-50'
                     }`}
                   >
                     {cat.label}

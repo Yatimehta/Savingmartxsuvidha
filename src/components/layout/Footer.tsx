@@ -195,72 +195,67 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter / Deals */}
-          <div>
-            <h3 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">
-              Get $10 Off First Order
-            </h3>
-            <p className="text-xs text-gray-400 mb-3">
-              Subscribe for weekly harvest updates, seasonal fruit arrivals, and Suvidha cafe specials.
-            </p>
+            {/* Newsletter / Deals */}
+            <div>
+              <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#FFC107]" />
+                Get $10 Off First Order
+              </h3>
+              <p className="text-xs text-gray-400 mb-3">
+                Subscribe for weekly harvest updates, seasonal fruit arrivals, and Suvidha specials.
+              </p>
 
-            {subscribed ? (
-              <div className="p-3 bg-green-950 border border-green-800 rounded-xl text-emerald-300 text-xs flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 shrink-0" />
-                <span>Thank you! Use coupon <strong>FRESH10</strong> at checkout.</span>
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="space-y-2">
-                <div className="relative">
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="w-full px-3.5 py-2.5 bg-gray-800 border border-gray-700 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-hidden focus:border-vegimart-green"
-                  />
+              {subscribed ? (
+                <div className="p-3 bg-[#FFF9C4] border border-[#FFC107] rounded-[6px] text-[#1B5E20] text-xs flex items-center gap-2 font-bold">
+                  <CheckCircle2 className="w-4 h-4 shrink-0 text-[#1B5E20]" />
+                  <span>Thank you! Use coupon <strong className="text-[#FF6F00]">GROCERZ10</strong> at checkout.</span>
                 </div>
-                <button
-                  type="submit"
-                  className="w-full bg-vegimart-orange hover:bg-orange-600 text-white font-semibold text-xs py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-colors shadow-xs"
-                >
-                  Claim $10 Coupon <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </form>
-            )}
+              ) : (
+                <form onSubmit={handleSubscribe} className="space-y-2">
+                  <div className="relative">
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="w-full px-3.5 py-2.5 bg-gray-800 border-2 border-[#FFC107] rounded-[6px] text-sm text-white placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-[#FFC107]"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-[#FFC107] hover:bg-[#ffb300] text-[#1A1A1A] font-black text-xs py-2.5 rounded-[6px] flex items-center justify-center gap-1.5 transition-all shadow-xs"
+                  >
+                    Subscribe & Claim $10 <ArrowRight className="w-3.5 h-3.5 text-[#1A1A1A]" />
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Payment Methods & Bottom Legal */}
-        <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-          <p>© {new Date().getFullYear()} VegiMart × Suvidha. All rights reserved. Registered Australian Business.</p>
+          {/* Payment Methods & Bottom Legal with YELLOW accent line above */}
+          <div className="mt-12 pt-8 border-t-2 border-[#FFC107]/40 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+            <p>© {new Date().getFullYear()} VegiMart × Suvidha Australia. All rights reserved. Sourced 100% from Grocerz.</p>
 
-          <div className="flex items-center gap-3 flex-wrap justify-center">
-            <span className="text-[11px] text-gray-400">Accepted Gateways & Payments:</span>
-            <div className="flex items-center gap-1.5">
-              <span className="bg-gray-800 px-2 py-1 rounded text-[10px] font-semibold text-indigo-400 border border-gray-700">
-                STRIPE
-              </span>
-              <span className="bg-gray-800 px-2 py-1 rounded text-[10px] font-semibold text-blue-400 border border-gray-700">
-                RAZORPAY
-              </span>
-              <span className="bg-gray-800 px-2 py-1 rounded text-[10px] font-semibold text-gray-300 border border-gray-700">
-                VISA
-              </span>
-              <span className="bg-gray-800 px-2 py-1 rounded text-[10px] font-semibold text-orange-400 border border-gray-700">
-                MC
-              </span>
-              <span className="bg-gray-800 px-2 py-1 rounded text-[10px] font-semibold text-emerald-400 border border-gray-700">
-                UPI
-              </span>
-              <span className="bg-gray-800 px-2 py-1 rounded text-[10px] font-semibold text-gray-300 border border-gray-700">
-                APPLE PAY
-              </span>
+            <div className="flex items-center gap-3 flex-wrap justify-center">
+              <span className="text-[11px] text-[#FFC107] font-bold">Accepted Gateways:</span>
+              <div className="flex items-center gap-1.5">
+                <span className="bg-gray-800 px-2 py-1 rounded text-[10px] font-bold text-white border border-[#FFC107]/50">
+                  STRIPE
+                </span>
+                <span className="bg-gray-800 px-2 py-1 rounded text-[10px] font-bold text-white border border-[#FFC107]/50">
+                  RAZORPAY
+                </span>
+                <span className="bg-gray-800 px-2 py-1 rounded text-[10px] font-semibold text-gray-300 border border-gray-700">
+                  VISA / MASTERCARD
+                </span>
+                <span className="bg-gray-800 px-2 py-1 rounded text-[10px] font-semibold text-emerald-400 border border-gray-700">
+                  UPI / GPAY
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </footer>
-  );
-}
+      </footer>
+    );
+  }
