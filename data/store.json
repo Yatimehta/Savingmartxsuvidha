@@ -5454,7 +5454,7 @@
       "rating": 4.7,
       "reviewsCount": 76,
       "inStock": true,
-      "stockCount": 30,
+      "stockCount": 29,
       "origin": "Australia (Grocerz.com.au)",
       "description": "Ammaas - Dry Coconut Shredded | 200g sourced directly from Grocerz Australia. 100% authentic, high quality produce and grocery staples delivered fresh across Australia.",
       "tags": [
@@ -9901,6 +9901,43 @@
   ],
   "orders": [
     {
+      "id": "ord-1789308284784",
+      "orderNumber": "VM-68332",
+      "createdAt": "2026-09-13T14:04:44.784Z",
+      "customer": {
+        "fullName": "Sarah Jenkins",
+        "email": "sarah.j@example.com",
+        "phone": "0412 345 678",
+        "addressLine1": "48 Collins Street, Apt 12B",
+        "addressLine2": "",
+        "suburb": "Melbourne",
+        "state": "VIC",
+        "postcode": "3000",
+        "deliveryInstructions": "Leave with front reception if not answering intercom"
+      },
+      "items": [
+        {
+          "productId": "grocerz-4370",
+          "productName": "Ammaas - Dry Coconut Shredded | 200g",
+          "unit": "100g",
+          "price": 3.89,
+          "quantity": 1,
+          "image": "https://www.grocerz.com.au/storage/3365/Ammaas---Dry-Coconut-Shredded-_-200g.webp"
+        }
+      ],
+      "subtotal": 3.89,
+      "deliveryFee": 4.99,
+      "discount": 0,
+      "tax": 0.39,
+      "total": 9.27,
+      "status": "processing",
+      "paymentGateway": "stripe",
+      "paymentStatus": "paid",
+      "transactionId": "pi_test_1789308284788_lc6772",
+      "deliverySlot": "Afternoon (1:00 PM - 4:00 PM)",
+      "estimatedDeliveryDate": "Today"
+    },
+    {
       "id": "ord-1789306846471",
       "orderNumber": "VM-84537",
       "createdAt": "2026-09-13T13:40:46.471Z",
@@ -10044,6 +10081,18 @@
     }
   ],
   "transactions": [
+    {
+      "id": "txn_1789308284798_yycs",
+      "orderId": "ord-1789308284784",
+      "orderNumber": "VM-68332",
+      "amount": 9.27,
+      "currency": "AUD",
+      "gateway": "stripe",
+      "gatewayTransactionId": "pi_test_1789308284788_lc6772",
+      "status": "succeeded",
+      "paymentMethod": "Stripe Card (Visa •••• 4242)",
+      "createdAt": "2026-09-13T14:04:44.798Z"
+    },
     {
       "id": "txn_1789306846511_m05a",
       "orderId": "ord-1789306846471",
