@@ -30,7 +30,7 @@ function CatalogContent() {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>(initialCategory);
   const [searchTerm, setSearchTerm] = useState(initialSearch);
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'rating'>('featured');
-  const [priceRange, setPriceRange] = useState<number>(25);
+  const [priceRange, setPriceRange] = useState<number>(60);
   const [organicOnly, setOrganicOnly] = useState(false);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
@@ -57,7 +57,7 @@ function CatalogContent() {
   }, [searchParams]);
 
   const categories: { id: string; label: string; slug: string }[] = [
-    { id: 'all', label: 'All 51 Grocerz Items', slug: 'all' },
+    { id: 'all', label: `All Grocerz Products (${products.length || 441})`, slug: 'all' },
     { id: 'fresh-fruits-and-vegetables', label: 'Fresh Fruits & Vegetables', slug: 'fresh-fruits-and-vegetables' },
     { id: 'indian-pantry', label: 'Indian Pantry', slug: 'indian-pantry' },
     { id: 'daily-essentials', label: 'Daily Essentials', slug: 'daily-essentials' },
@@ -65,7 +65,16 @@ function CatalogContent() {
     { id: 'snacks-munchies', label: 'Snacks & Munchies', slug: 'snacks-munchies' },
     { id: 'dairy-eggs-fridge', label: 'Dairy Eggs & Fridge', slug: 'dairy-eggs-fridge' },
     { id: 'dry-fruits-nuts-and-seeds', label: 'Dry Fruits & Seeds', slug: 'dry-fruits-nuts-and-seeds' },
-    { id: 'drinks', label: 'Drinks', slug: 'drinks' }
+    { id: 'drinks', label: 'Drinks & Beverages', slug: 'drinks' },
+    { id: 'half-price', label: 'Half Price Deals', slug: 'half-price' },
+    { id: 'specials', label: 'Specials & Offers', slug: 'specials' },
+    { id: 'todays-special', label: "Today's Specials", slug: 'todays-special' },
+    { id: 'popular', label: 'Popular Harvest', slug: 'popular' },
+    { id: 'best-sellers', label: 'Best Sellers', slug: 'best-sellers' },
+    { id: 'combo-deals', label: 'Combo Deals', slug: 'combo-deals' },
+    { id: 'clearance', label: 'Clearance', slug: 'clearance' },
+    { id: 'new-arrivals', label: 'New Arrivals', slug: 'new-arrivals' },
+    { id: 'dietary', label: 'Dietary & Organic', slug: 'dietary' }
   ];
 
   const filteredProducts = useMemo(() => {
@@ -169,12 +178,12 @@ function CatalogContent() {
             <h3 className="font-bold text-gray-900 text-sm flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4 text-vegimart-green" /> Filters
             </h3>
-            {(selectedCategory !== 'all' || searchTerm || priceRange < 25 || organicOnly) && (
+            {(selectedCategory !== 'all' || searchTerm || priceRange < 60 || organicOnly) && (
               <button
                 onClick={() => {
                   setSelectedCategory('all');
                   setSearchTerm('');
-                  setPriceRange(25);
+                  setPriceRange(60);
                   setOrganicOnly(false);
                 }}
                 className="text-xs text-rose-600 hover:underline font-medium"
@@ -229,16 +238,16 @@ function CatalogContent() {
             </div>
             <input
               type="range"
-              min="2"
-              max="25"
+              min="1"
+              max="60"
               step="1"
               value={priceRange}
               onChange={(e) => setPriceRange(Number(e.target.value))}
               className="w-full accent-[#FFC107] cursor-pointer"
             />
             <div className="flex justify-between text-[10px] text-gray-500">
-              <span>$2</span>
-              <span>$25+</span>
+              <span>$1</span>
+              <span>$60+</span>
             </div>
           </div>
 
@@ -290,7 +299,7 @@ function CatalogContent() {
                 onClick={() => {
                   setSelectedCategory('all');
                   setSearchTerm('');
-                  setPriceRange(25);
+                  setPriceRange(60);
                   setOrganicOnly(false);
                 }}
                 className="bg-vegimart-green text-white px-4 py-2 rounded-xl text-xs font-semibold"
@@ -351,8 +360,8 @@ function CatalogContent() {
               </label>
               <input
                 type="range"
-                min="2"
-                max="25"
+                min="1"
+                max="60"
                 step="1"
                 value={priceRange}
                 onChange={(e) => setPriceRange(Number(e.target.value))}
