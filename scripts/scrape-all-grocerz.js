@@ -75,6 +75,9 @@ async function scrapeCategory(cat, pageNum = 1) {
       if (imgSrc && !imgSrc.startsWith('http')) {
         imgSrc = 'https://www.grocerz.com.au' + (imgSrc.startsWith('/') ? '' : '/') + imgSrc;
       }
+      if (imgSrc) {
+        imgSrc = decodeHtmlEntities(imgSrc);
+      }
       
       // Name
       const nameMatch = chunk.match(/<a[^>]*class=[\"'][^\"']*tnc-product-link[^\"']*[\"'][^>]*>([\s\S]*?)<\/a>/i) ||
